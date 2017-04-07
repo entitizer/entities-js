@@ -33,6 +33,7 @@
   "homepage": "https://github.com/entitizer/entities-js#readme",
   "devDependencies": {
     "@types/node": "^7.x.x",
+    "@types/redis": "^0.12.36",
     "debug": "^2.6.3",
     "mocha": "^3.2.0",
     "request": "^2.81.0",
@@ -42,7 +43,11 @@
   "dependencies": {
     "atonic": "^1.0.4",
     "bluebird": "^3.5.0",
+    "joi": "5.x.x",
     "lodash": "^4.17.4",
+    "node-cache": "^4.1.1",
+    "redis": "^2.7.1",
+    "vogels": "^2.2.0",
     "wiki-entity": "^0.1.3"
   }
 }

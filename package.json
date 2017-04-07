@@ -1,0 +1,39 @@
+{
+  "name": "entitizer.entities",
+  "version": "0.0.1",
+  "description": "Entitizer entities module",
+  "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
+  "scripts": {
+    "pretest": "npm run tsc",
+    "test": "mocha",
+    "tsc": "tsc",
+    "tscw": "tsc -w",
+    "preversion": "npm run tsc",
+    "postversion": "git push --follow-tags",
+    "prepublish": "npm run tsc"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/entitizer/entities-js.git"
+  },
+  "keywords": [
+    "entitizer",
+    "entities",
+    "entity"
+  ],
+  "author": "Dumitru Cantea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/entitizer/entities-js/issues"
+  },
+  "homepage": "https://github.com/entitizer/entities-js#readme",
+  "devDependencies": {
+    "@types/node": "^7.x.x",
+    "mocha": "^3.2.0",
+    "typescript": "^2.2.2"
+  }
+}

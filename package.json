@@ -6,7 +6,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "pretest": "npm run tsc",
-    "test": "mocha",
+    "test": "mocha -t 5000",
     "tsc": "tsc",
     "tscw": "tsc -w",
     "preversion": "npm run tsc",
@@ -33,7 +33,16 @@
   "homepage": "https://github.com/entitizer/entities-js#readme",
   "devDependencies": {
     "@types/node": "^7.x.x",
+    "debug": "^2.6.3",
     "mocha": "^3.2.0",
+    "request": "^2.81.0",
+    "sizeof": "^1.0.0",
     "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "atonic": "^1.0.4",
+    "bluebird": "^3.5.0",
+    "lodash": "^4.17.4",
+    "wiki-entity": "^0.1.3"
   }
 }

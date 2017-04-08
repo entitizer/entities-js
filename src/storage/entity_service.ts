@@ -1,7 +1,7 @@
 
-import { PlainObject } from 'entitizer.models';
+import { PlainObject, Entity } from 'entitizer.models';
 import { dynamoGet } from '../utils';
-import { Entity } from './db/models';
+import { Entity as EntityModel } from './db/models';
 import { ENTITY_FIELDS } from './db/schemas';
 
 /**
@@ -10,32 +10,32 @@ import { ENTITY_FIELDS } from './db/schemas';
  */
 export class EntityService {
 
-	getEntityById(id: string, params?: PlainObject): Promise<PlainObject> {
-		return Entity.getAsync(id, params).then(dynamoGet);
+	getEntityById(id: string, params?: PlainObject): Promise<Entity> {
+		return EntityModel.getAsync(id, params).then(dynamoGet);
 	}
 
-	getEntitiesByIds(ids: string[], params?: PlainObject): Promise<PlainObject[]> {
-		return Entity.getItemsAsync(ids, params).then(dynamoGet);
+	getEntitiesByIds(ids: string[], params?: PlainObject): Promise<Entity[]> {
+		return EntityModel.getItemsAsync(ids, params).then(dynamoGet);
 	}
 
-	createEntity(data: PlainObject, params?: PlainObject): Promise<PlainObject> {
+	createEntity(data: Entity, params?: PlainObject): Promise<Entity> {
 		params = params || {};
 		params.overwrite = false;
-		return Entity.createAsync(data, params).then(dynamoGet);
+		return EntityModel.createAsync(data, params).then(dynamoGet);
 	}
 
-	putEntity(data: PlainObject, params?: PlainObject): Promise<PlainObject> {
-		return Entity.createAsync(data, params).then(dynamoGet);
+	putEntity(data: Entity, params?: PlainObject): Promise<Entity> {
+		return EntityModel.createAsync(data, params).then(dynamoGet);
 	}
 
-	updateEntity(data: PlainObject, params?: PlainObject): Promise<PlainObject> {
+	updateEntity(data: Entity, params?: PlainObject): Promise<Entity> {
 		params = params || {};
 		params.expected = params.expected || {};
 		params.expected[ENTITY_FIELDS.id] = data[ENTITY_FIELDS.id];
-		return Entity.updateAsync(data, params).then(dynamoGet);
+		return EntityModel.updateAsync(data, params).then(dynamoGet);
 	}
 
-	deleteEntity(id: string, params?: PlainObject): Promise<PlainObject> {
-		return Entity.destroyAsync(id, params).then(dynamoGet);
+	deleteEntity(id: string, params?: PlainObject): Promise<Entity> {
+		return EntityModel.destroyAsync(id, params).then(dynamoGet);
 	}
 }

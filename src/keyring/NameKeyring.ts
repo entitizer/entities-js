@@ -28,6 +28,10 @@ export class NameKeyring extends Keyring<string> {
         return this.get(key).then(value => value && value.split('|') || []);
     }
 
+    addNames(entityId: string, names: string[], lang: string): Promise<string[]> {
+        return Promise.each(names, name => this.addName(entityId, name, lang));
+    }
+
     addName(entityId: string, name: string, lang: string): Promise<string[]> {
         const key = NameKeyring.formatKey(name, lang);
 
@@ -47,6 +51,10 @@ export class NameKeyring extends Keyring<string> {
 
                 return this.set(key, ids.join('|')).then(() => ids);
             });
+    }
+
+    deleteNames(entityId: string, names: string[], lang: string): Promise<string[]> {
+        return Promise.each(names, name => this.deleteName(entityId, name, lang));
     }
 
     deleteName(entityId: string, name: string, lang: string): Promise<string[]> {

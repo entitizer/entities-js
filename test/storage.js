@@ -10,10 +10,10 @@ var Promise = utils.Promise;
 var storage = require('../lib/storage');
 
 var Data = {
-	entityService: new storage.EntityService(),
-	entityNamesService: new storage.EntityNamesService(),
-	createTables: storage.createTables,
-	deleteTables: storage.deleteTables
+    entityService: new storage.EntityService(),
+    entityNamesService: new storage.EntityNamesService(),
+    createTables: storage.createTables,
+    deleteTables: storage.deleteTables
 };
 
 describe('services', function () {
@@ -47,7 +47,7 @@ describe('services', function () {
     }
 
     before('createTables', function () {
-        this.timeout(20 * 1000);
+        this.timeout(30 * 1000);
         return Data.createTables().then(createEntities);
     });
 

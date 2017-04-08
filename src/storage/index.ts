@@ -5,8 +5,8 @@ export { ENTITY_FIELDS, ENTITY_NAMES_FIELDS } from './db/schemas';
 
 // export * from './categories';
 import * as Config from './config';
-export { Config };
+export { Config }
 
 import { createTables } from './db/create_tables';
 import { deleteTables } from './db/delete_tables';
-export { createTables, deleteTables };
+export { createTables, deleteTables }

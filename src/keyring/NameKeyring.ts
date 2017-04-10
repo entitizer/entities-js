@@ -4,7 +4,7 @@ const debug = require('debug')('keyring:name');
 import { IKeyStorage, IPlainObject } from './types';
 import { Keyring } from './Keyring';
 import { md5, _, Promise } from '../utils';
-import * as EntityNamesBuilder from '../models-builder/EntityNamesBuilder';
+import { EntityNamesBuilder } from 'entitizer.models-builder';
 const atonic = require('atonic');
 
 export class NameKeyring extends Keyring<string> {

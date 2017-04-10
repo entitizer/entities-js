@@ -5,7 +5,7 @@ import { Entity, PlainObject } from 'entitizer.models';
 import { NameKeyring } from './keyring/NameKeyring';
 import { RedisStorage } from './keyring/RedisStorage';
 import { EntityService, ENTITY_FIELDS, EntityNamesService, ENTITY_NAMES_FIELDS, Config } from './storage';
-import { EntityBuilder, EntityNamesBuilder } from './models-builder';
+import { EntityBuilder, EntityNamesBuilder } from 'entitizer.models-builder';
 import { RedisClient } from 'redis';
 
 export type DynamoDBConfig = {

@@ -74,7 +74,7 @@ export class EntityManager {
             .then(newEntity => {
                 const names = EntityNamesBuilder.formatNames(newEntity);
 
-                return this.setEntityNames(newEntity.id, names).then(() => newEntity);
+                return this.addEntityNames(newEntity.id, names).then(() => newEntity);
             });
     }
 
@@ -114,22 +114,19 @@ export class EntityManager {
                 }
                 data[ENTITY_NAMES_FIELDS.names] = newNames.join('|');
 
-                return this.entityNamesStorage.updateEntityNames(data)
+                return this.entityNamesStorage.putEntityNames(data)
                     .then(() => {
                         return this.nameKeyring.addName(entityId, name, lang).then(() => newNames);
                     });
             });
     }
 
+    addEntityNames(entityId: string, names: string[]): Promise<string[]> {
+        return Promise.each(names, name => this.addEntityName(entityId, name));
+    }
+
     setEntityNames(entityId: string, names: string[]): Promise<string[]> {
-        const lang = entityId.substr(0, 2);
-        const data = {};
-        data[ENTITY_NAMES_FIELDS.entityId] = entityId;
-        data[ENTITY_NAMES_FIELDS.names] = names.join('|');
-        return this.entityNamesStorage.putEntityNames(data)
-            .then((result) => {
-                return this.nameKeyring.addNames(entityId, names, lang).then(() => result.names.split('|'));
-            });
+        return this.deleteEntityNames(entityId).then(() => this.addEntityNames(entityId, names));
     }
 
     deleteEntityNames(entityId: string): Promise<string[]> {

@@ -1,6 +1,6 @@
 
-export { EntityService } from './entity_service';
-export { EntityNamesService } from './entity_names_service';
+export { EntityStorage } from './entity_storage';
+export { EntityNamesStorage } from './entity_names_storage';
 export { ENTITY_FIELDS, ENTITY_NAMES_FIELDS } from './db/schemas';
 
 // export * from './categories';

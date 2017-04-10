@@ -4,7 +4,7 @@ import { _, Promise } from './utils';
 import { Entity, PlainObject } from 'entitizer.models';
 import { NameKeyring } from './keyring/NameKeyring';
 import { RedisStorage } from './keyring/RedisStorage';
-import { EntityService, ENTITY_FIELDS, EntityNamesService, ENTITY_NAMES_FIELDS, Config } from './storage';
+import { EntityStorage, ENTITY_FIELDS, EntityNamesStorage, ENTITY_NAMES_FIELDS, Config } from './storage';
 import { EntityBuilder, EntityNamesBuilder } from 'entitizer.models-builder';
 import { RedisClient } from 'redis';
 
@@ -18,13 +18,13 @@ export type DynamoDBConfig = {
 
 export class EntityManager {
     private nameKeyring: NameKeyring;
-    private entityService: EntityService;
-    private entityNamesService: EntityNamesService;
+    private entityStorage: EntityStorage;
+    private entityNamesStorage: EntityNamesStorage;
 
-    constructor(nameKeyring: NameKeyring, entityService: EntityService, entityNamesService: EntityNamesService) {
+    constructor(nameKeyring: NameKeyring, entityStorage: EntityStorage, entityNamesStorage: EntityNamesStorage) {
         this.nameKeyring = nameKeyring;
-        this.entityService = entityService;
-        this.entityNamesService = entityNamesService;
+        this.entityStorage = entityStorage;
+        this.entityNamesStorage = entityNamesStorage;
     }
 
     static create(client: RedisClient, dynamoConfig?: DynamoDBConfig): EntityManager {
@@ -32,15 +32,15 @@ export class EntityManager {
             Config.config(dynamoConfig);
         }
         const name = new NameKeyring(new RedisStorage(client));
-        return new EntityManager(name, new EntityService(), new EntityNamesService());
+        return new EntityManager(name, new EntityStorage(), new EntityNamesStorage());
     }
 
     getEntity(id: string, params?: PlainObject): Promise<Entity> {
-        return this.entityService.getEntityById(id, params);
+        return this.entityStorage.getEntityById(id, params);
     }
 
     getEntities(ids: string[], params?: PlainObject): Promise<Entity[]> {
-        return this.entityService.getEntitiesByIds(ids, params);
+        return this.entityStorage.getEntitiesByIds(ids, params);
     }
 
     getEntityIdsByName(name: string, lang: string): Promise<string[]> {
@@ -57,7 +57,7 @@ export class EntityManager {
     }
 
     getEntityNames(entityId: string, params?: PlainObject): Promise<string[]> {
-        return this.entityNamesService.getEntityNames(entityId, params)
+        return this.entityNamesStorage.getEntityNames(entityId, params)
             .then(result => {
                 if (result && result.names) {
                     return result.names.split('|');
@@ -70,7 +70,7 @@ export class EntityManager {
     createEntity(data: Entity): Promise<Entity> {
         // const data = entity.toJSON();
 
-        return this.entityService.createEntity(data)
+        return this.entityStorage.createEntity(data)
             .then(newEntity => {
                 const names = EntityNamesBuilder.formatNames(newEntity);
 
@@ -88,7 +88,7 @@ export class EntityManager {
                 }
                 const dbNames = EntityNamesBuilder.formatNames(dbEntity);
 
-                return this.entityService.updateEntity(data).then(newEntity => {
+                return this.entityStorage.updateEntity(data).then(newEntity => {
                     const newNames = EntityNamesBuilder.formatNames(newEntity);
 
                     const deletedNames = _.difference(dbNames, newNames);
@@ -114,7 +114,7 @@ export class EntityManager {
                 }
                 data[ENTITY_NAMES_FIELDS.names] = newNames.join('|');
 
-                return this.entityNamesService.updateEntityNames(data)
+                return this.entityNamesStorage.updateEntityNames(data)
                     .then(() => {
                         return this.nameKeyring.addName(entityId, name, lang).then(() => newNames);
                     });
@@ -126,7 +126,7 @@ export class EntityManager {
         const data = {};
         data[ENTITY_NAMES_FIELDS.entityId] = entityId;
         data[ENTITY_NAMES_FIELDS.names] = names.join('|');
-        return this.entityNamesService.putEntityNames(data)
+        return this.entityNamesStorage.putEntityNames(data)
             .then((result) => {
                 return this.nameKeyring.addNames(entityId, names, lang).then(() => result.names.split('|'));
             });
@@ -138,13 +138,13 @@ export class EntityManager {
             .then(names => {
                 return Promise.props({
                     p1: this.nameKeyring.deleteNames(entityId, names, lang),
-                    p2: this.entityNamesService.deleteEntityNames(entityId)
+                    p2: this.entityNamesStorage.deleteEntityNames(entityId)
                 }).then(() => names);
             });
     }
 
     deleteEntity(entityId: string, params?: PlainObject): Promise<Entity> {
-        return this.entityService.deleteEntity(entityId, params)
+        return this.entityStorage.deleteEntity(entityId, params)
             .then(result => {
                 return this.deleteEntityNames(entityId).then(() => result);
             });

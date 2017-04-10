@@ -7,8 +7,8 @@ const keyring = require('../lib/keyring');
 const DynamoStorage = keyring.DynamoStorage;
 const NameKeyring = keyring.NameKeyring;
 const storage = require('../lib/storage');
-const EntityService = storage.EntityService;
-const EntityNamesService = storage.EntityNamesService;
+const EntityStorage = storage.EntityStorage;
+const EntityNamesStorage = storage.EntityNamesStorage;
 const assert = require('assert');
 // const Entity = require('entitizer.models').Entity;
 const Promise = require('../lib/utils').Promise;
@@ -16,9 +16,9 @@ const Promise = require('../lib/utils').Promise;
 describe('EntityManager', function () {
     const dynamoStorage = new DynamoStorage('test_Entitizer_v1_NamesKeyring');
     const namekeyring = new NameKeyring(dynamoStorage);
-    const entityService = new EntityService();
-    const entityNamesService = new EntityNamesService();
-    const manager = new EntityManager(namekeyring, entityService, entityNamesService);
+    const entityService = new EntityStorage();
+    const entityNamesStorage = new EntityNamesStorage();
+    const manager = new EntityManager(namekeyring, entityService, entityNamesStorage);
 
     before(function () {
         this.timeout(30 * 1000);

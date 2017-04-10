@@ -5,10 +5,10 @@ import { EntityNames } from './db/models';
 import { ENTITY_NAMES_FIELDS } from './db/schemas';
 
 /**
- * EntityNamesService class
+ * EntityNamesStorage class
  * @class
  */
-export class EntityNamesService {
+export class EntityNamesStorage {
 
     getEntityNames(id: string, params?: PlainObject): Promise<PlainObject> {
         return EntityNames.getAsync(id, params).then(dynamoGet);

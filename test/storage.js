@@ -10,15 +10,15 @@ var Promise = utils.Promise;
 var storage = require('../lib/storage');
 
 var Data = {
-    entityService: new storage.EntityService(),
-    entityNamesService: new storage.EntityNamesService(),
+    entityStorage: new storage.EntityStorage(),
+    entityNamesStorage: new storage.EntityNamesStorage(),
     createTables: storage.createTables,
     deleteTables: storage.deleteTables
 };
 
 describe('services', function () {
-    var entityService = Data.entityService;
-    var entityNamesService = Data.entityNamesService;
+    var entityService = Data.entityStorage;
+    var entityNamesService = Data.entityNamesStorage;
 
     function createEntities() {
         var entities = [{

@@ -5,10 +5,10 @@ import { Entity as EntityModel } from './db/models';
 import { ENTITY_FIELDS } from './db/schemas';
 
 /**
- * EntityService class
+ * EntityStorage class
  * @class
  */
-export class EntityService {
+export class EntityStorage {
 
 	getEntityById(id: string, params?: PlainObject): Promise<Entity> {
 		return EntityModel.getAsync(id, params).then(dynamoGet);

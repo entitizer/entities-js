@@ -1,5 +1,5 @@
 
-import { IKeyStorage } from './types';
+import { IKeyStorage, IPlainObject } from './types';
 import { Promise } from '../utils';
 
 const vogels = require('vogels');
@@ -19,19 +19,19 @@ export class DynamoStorage<T> implements IKeyStorage<T> {
         }
     }
 
-    get(key: string) {
+    get(key: string): Promise<T[]> {
         return this._model.getAsync(key)
-            .then(item => item && fromJson<T>(item.get('data')));
+            .then(item => item && item.get('data'));
     }
 
-    mget(keys: string[]) {
+    mget(keys: string[]): Promise<IPlainObject<T[]>> {
         return this._model.getItemsAsync(keys)
             .then(items => {
-                const data = {};
+                const data: IPlainObject<T[]> = {};
 
                 if (items && items.length) {
                     items.forEach(item => {
-                        data[item.get('key')] = fromJson<T>(item.get('data'));
+                        data[item.get('key')] = item.get('data');
                     });
                 }
 
@@ -39,14 +39,44 @@ export class DynamoStorage<T> implements IKeyStorage<T> {
             });
     }
 
-    set(key: string, value: T) {
-        return this._model.createAsync({ key: key, data: toJson(value) }, { overwrite: true })
-            .then(() => true);
+    set(key: string, value: T[]): Promise<number> {
+        return this._model.createAsync({ key: key, data: value }, { overwrite: true })
+            .then(result => result.data.length);
     }
 
-    remove(key: string) {
+    add(key: string, items: T[]): Promise<number> {
+        const params: any = { };
+        params.UpdateExpression = 'ADD #data :value';
+        // params.ConditionExpression = '#year = :current';
+        params.ExpressionAttributeNames = {
+            '#data': 'data'
+        };
+
+        params.ExpressionAttributeValues = {
+            ':value': vogels.Set(items, 'S')
+        };
+        return this._model.updateAsync({ key: key }, params)
+            .then(() => items.length);
+    }
+
+    del(key: string, values: T[]): Promise<number> {
+        const params: any = { overwrite: false };
+        params.UpdateExpression = 'DELETE #data :value';
+        // params.ConditionExpression = '#year = :current';
+        params.ExpressionAttributeNames = {
+            '#data': 'data'
+        };
+
+        params.ExpressionAttributeValues = {
+            ':value': vogels.Set(values, 'S')
+        };
+        return this._model.updateAsync({ key: key }, params)
+            .then(() => values.length);
+    }
+
+    remove(key: string): Promise<number> {
         return this._model.destroyAsync(key)
-            .then(() => true);
+            .then(() => 1);
     }
 
     createTable() {
@@ -65,15 +95,7 @@ function createDataModel(name: string, tableName: string) {
         timestamps: false,
         schema: {
             key: Joi.string().trim().max(40).required(),
-            data: Joi.string().trim().max(1000).required()
+            data: vogels.types.stringSet().required()
         }
     });
-}
-
-function toJson(value: any): string {
-    return JSON.stringify(value);
-}
-
-function fromJson<T>(value: string): T {
-    return JSON.parse(value);
 }

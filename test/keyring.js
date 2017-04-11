@@ -25,27 +25,27 @@ describe('NameKeyring', function () {
     });
 
     it('addName: diacritics', function () {
-        return keyring.addName(stefanId, stefan, lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName(stefanId, stefan, lang).then(ids => assert.equal(1, ids));
     });
     it('addName: atonic', function () {
-        return keyring.addName(stefanId, 'Stefan cel mare', lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName(stefanId, 'Stefan cel mare', lang).then(ids => assert.equal(1, ids));
     });
     it('addName: multiple', function () {
-        return keyring.addName(stefanId, 'Ștefan cel Mare și Sfânt', lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName(stefanId, 'Ștefan cel Mare și Sfânt', lang).then(ids => assert.equal(1, ids));
     });
 
     it('addName: abbreviasion', function () {
-        return keyring.addName(natoId, nato, lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName(natoId, nato, lang).then(ids => assert.equal(1, ids));
     });
 
     it('addName: C++', function () {
-        return keyring.addName('cpp', 'C++', lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName('cpp', 'C++', lang).then(ids => assert.equal(1, ids));
     });
 
     it('addName: Ministerul Culturii 1', function () {
-        return keyring.addName('10', 'Ministerul Culturii', lang).then(ids => assert.equal(1, ids.length));
+        return keyring.addName('10', 'Ministerul Culturii', lang).then(ids => assert.equal(1, ids));
     });
     it('addName: Ministerul Culturii 2', function () {
-        return keyring.addName('11', 'Ministerul Culturii', lang).then(ids => assert.equal(2, ids.length));
+        return keyring.addName('11', 'Ministerul Culturii', lang).then(ids => assert.equal(1, ids));
     });
 });

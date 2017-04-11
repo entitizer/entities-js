@@ -32,7 +32,7 @@ describe('EntityManager', function () {
         this.timeout(30 * 1000);
         return Promise.props({
             t1: storage.deleteTables('iam-sure').catch(() => null),
-            t2: dynamoStorage.deleteTable()
+            t2: dynamoStorage.deleteTable().catch(() => null)
         }).delay(5 * 1000);
     });
 
@@ -42,14 +42,9 @@ describe('EntityManager', function () {
             .catch(e => assert.ok(e));
     });
 
-    // it('should throws error on updating un unexisting entity', function () {
-    //     return manager.addEntityAliase('ROQ1', 'name', 'RO')
-    //         .then(() => assert.ok(null))
-    //         .catch(e => assert.ok(e));
-    // });
-
     it('should create an entity', function () {
-        return manager.createEntity({ id: 'ROQ100', name: 'name', wikiId: 'Q100', lang: 'ro', rank: 1 }).delay(1000 * 3);
+        this.timeout(20 * 1000);
+        return manager.createEntity({ id: 'ROQ100', name: 'name', wikiId: 'Q100', lang: 'ro', rank: 1 }).delay(1000);
     });
 
     it('should get entity ids by name', function () {

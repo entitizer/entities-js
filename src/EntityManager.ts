@@ -36,11 +36,11 @@ export class EntityManager {
     }
 
     getEntity(id: string, params?: PlainObject): Promise<Entity> {
-        return this.entityStorage.getEntityById(id, params);
+        return this.entityStorage.get(id, params);
     }
 
     getEntities(ids: string[], params?: PlainObject): Promise<Entity[]> {
-        return this.entityStorage.getEntitiesByIds(ids, params);
+        return this.entityStorage.getItems(ids, params);
     }
 
     getEntityIdsByName(name: string, lang: string): Promise<string[]> {
@@ -56,124 +56,89 @@ export class EntityManager {
         });
     }
 
-    getEntityNames(entityId: string, params?: PlainObject): Promise<string[]> {
-        return this.entityNamesStorage.getEntityNames(entityId, params)
+    createEntity(data: Entity): Promise<Entity> {
+        // const data = entity.toJSON();
+
+        return this.entityStorage.create(data)
+            .then(newEntity => {
+                const names = EntityNamesBuilder.formatNames(newEntity);
+
+                return this.setEntityNames(newEntity.id, names).then(() => newEntity);
+            });
+    }
+
+    updateEntity(data: Entity, params?: PlainObject): Promise<Entity> {
+        return this.entityStorage.update(data, params);
+    }
+
+    deleteEntity(entityId: string, params?: PlainObject): Promise<Entity> {
+        return this.entityStorage.deleteEntity(entityId, params)
             .then(result => {
-                if (result && result.names) {
-                    return result.names.split('|');
+                return this.removeEntityNames(entityId).then(() => result);
+            });
+    }
+
+    getEntityNames(entityId: string, params?: PlainObject): Promise<string[]> {
+        return this.entityNamesStorage.get(entityId, params)
+            .then(result => {
+                if (result) {
+                    return result.names || [];
                 }
 
                 return [];
             });
     }
 
-    createEntity(data: Entity): Promise<Entity> {
-        // const data = entity.toJSON();
-
-        return this.entityStorage.createEntity(data)
-            .then(newEntity => {
-                const names = EntityNamesBuilder.formatNames(newEntity);
-
-                return this.addEntityNames(newEntity.id, names).then(() => newEntity);
-            });
-    }
-
-    updateEntity(data: Entity): Promise<Entity> {
-        // const data = entity.toJSON();
-
-        return this.getEntity(data.id, { AttributesToGet: [ENTITY_FIELDS.id, ENTITY_FIELDS.abbr, ENTITY_FIELDS.aliases, ENTITY_FIELDS.name, ENTITY_FIELDS.wikiTitle] })
-            .then(dbEntity => {
-                if (!dbEntity) {
-                    return Promise.reject(new Error('Unexisting entity!'));
-                }
-                const dbNames = EntityNamesBuilder.formatNames(dbEntity);
-
-                return this.entityStorage.updateEntity(data).then(newEntity => {
-                    const newNames = EntityNamesBuilder.formatNames(newEntity);
-
-                    const deletedNames = _.difference(dbNames, newNames);
-                    const addedNames = _.difference(newNames, dbNames);
-
-                    return Promise.each(deletedNames, dName => this.nameKeyring.deleteName(newEntity.id, dName, newEntity.lang))
-                        .then(() => Promise.each(addedNames, aName => this.nameKeyring.addName(newEntity.id, aName, newEntity.lang)))
-                        .then(() => newEntity);
-                });
-            });
-    }
-
-    addEntityName(entityId: string, name: string): Promise<string[]> {
+    addEntityNames(entityId: string, names: string[]): Promise<number> {
         const lang = entityId.substr(0, 2);
-        const data = {};
-        data[ENTITY_NAMES_FIELDS.entityId] = entityId;
 
-        return this.getEntityNames(entityId)
-            .then(names => {
-                const newNames = EntityNamesBuilder.filterNames(names.concat([name]));
-                if (names.length >= newNames.length) {
-                    return names;
-                }
-                data[ENTITY_NAMES_FIELDS.names] = newNames.join('|');
+        if (names && names.length) {
+            return Promise.props({
+                p1: this.nameKeyring.addNames(entityId, names, lang),
+                p2: this.entityNamesStorage.addNames(entityId, names)
+            }).then(result => result && result.p2 && result.p2.names.length || 0);
+        }
 
-                return this.entityNamesStorage.putEntityNames(data)
-                    .then(() => {
-                        return this.nameKeyring.addName(entityId, name, lang).then(() => newNames);
-                    });
-            });
+        return Promise.resolve(0);
     }
 
-    addEntityNames(entityId: string, names: string[]): Promise<string[]> {
-        return Promise.each(names, name => this.addEntityName(entityId, name));
+    setEntityNames(entityId: string, names: string[]): Promise<number> {
+        return this.removeEntityNames(entityId).then(() => {
+            const lang = entityId.substr(0, 2);
+
+            if (names && names.length) {
+                return Promise.props({
+                    p1: this.nameKeyring.addNames(entityId, names, lang),
+                    p2: this.entityNamesStorage.put({ entityId: entityId, names: names })
+                }).then(result => result && result.p2 && result.p2.names.length || 0);
+            }
+
+            return Promise.resolve(0);
+        });
     }
 
-    setEntityNames(entityId: string, names: string[]): Promise<string[]> {
-        return this.deleteEntityNames(entityId).then(() => this.addEntityNames(entityId, names));
-    }
-
-    deleteEntityNames(entityId: string): Promise<string[]> {
+    removeEntityNames(entityId: string): Promise<boolean> {
         const lang = entityId.substr(0, 2);
+
         return this.getEntityNames(entityId)
             .then(names => {
                 return Promise.props({
                     p1: this.nameKeyring.deleteNames(entityId, names, lang),
-                    p2: this.entityNamesStorage.deleteEntityNames(entityId)
-                }).then(() => names);
+                    p2: this.entityNamesStorage.deleteEntity(entityId)
+                }).then(() => names.length > 0);
             });
     }
 
-    deleteEntity(entityId: string, params?: PlainObject): Promise<Entity> {
-        return this.entityStorage.deleteEntity(entityId, params)
-            .then(result => {
-                return this.deleteEntityNames(entityId).then(() => result);
-            });
+    deleteEntityNames(entityId: string, names: string[]): Promise<number> {
+        const lang = entityId.substr(0, 2);
+
+        if (names && names.length) {
+            return Promise.props({
+                p1: this.nameKeyring.deleteNames(entityId, names, lang),
+                p2: this.entityNamesStorage.deleteNames(entityId, names)
+            }).then(result => result && result.p2 && result.p2.names.length || 0);
+        }
+
+        return Promise.resolve(0);
     }
-
-    // addNameKey(entityId: string, name: string, lang: string): Promise<string[]> {
-    //     return this.nameKeyring.addName(entityId, name, lang);
-    // }
-
-    // addEntityAlias(entityId: string, alias: string, lang: string): Promise<boolean> {
-    //     return this.getEntity(entityId, { AttributesToGet: [ENTITY_FIELDS.id, ENTITY_FIELDS.abbr, ENTITY_FIELDS.aliases, ENTITY_FIELDS.name, ENTITY_FIELDS.wikiTitle] })
-    //         .then(dbEntity => {
-    //             if (!dbEntity) {
-    //                 return Promise.reject(new Error('Unexisting entity!'));
-    //             }
-    //             const names = formatEntityNames(dbEntity.name, dbEntity.wikiTitle, dbEntity.abbr, dbEntity.aliases);
-    //             // alias exists
-    //             if (~indexOfNocase(names, alias)) {
-    //                 return false;
-    //             }
-
-    //             dbEntity.aliases = dbEntity.aliases || [];
-    //             dbEntity.aliases.push(alias);
-
-    //             return this.entityService.updateEntity({ id: entityId, aliases: dbEntity.aliases })
-    //                 .then(() => {
-    //                     return this.nameKeyring.addName(entityId, alias, lang);
-    //                 }).then(() => true);
-    //         });
-    // }
-
-    // deleteNameKey(entityId: string, name: string, lang: string): Promise<string[]> {
-    //     return this.nameKeyring.deleteName(entityId, name, lang);
-    // }
 }

@@ -77,10 +77,10 @@ export const ENTITY_NAMES_FIELDS = {
 
 export const EntityNamesSchema = {
 	entityId: Joi.string().regex(/^[A-Z]{2}Q\d+$/).required(),
-	names: Joi.string().min(2).required()
+	names: vogels.types.stringSet().required()
 }
 
 export const UpdateEntityNamesSchema = {
 	entityId: Joi.string().regex(/^[A-Z]{2}Q\d+$/).required(),
-	names: Joi.string().min(2).required()
+	names: vogels.types.stringSet()
 }

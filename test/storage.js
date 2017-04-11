@@ -42,7 +42,7 @@ describe('services', function () {
         }];
 
         return Promise.each(entities, function (entity) {
-            return entityService.createEntity(entity);
+            return entityService.create(entity);
         });
     }
 
@@ -59,7 +59,7 @@ describe('services', function () {
     describe('EntityService', function () {
 
         it('should get entity by id', function () {
-            return entityService.getEntityById('ROQ1')
+            return entityService.get('ROQ1')
                 .then(function (entity) {
                     assert.ok(entity);
                     assert.ok(entity.name);
@@ -68,7 +68,7 @@ describe('services', function () {
         });
 
         it('should get entity by id, and AWS params', function () {
-            return entityService.getEntityById('ROQ1', {
+            return entityService.get('ROQ1', {
                 AttributesToGet: ['id', 'rank']
             }).then(function (entity) {
                 assert.ok(entity);
@@ -79,7 +79,7 @@ describe('services', function () {
         });
 
         it('should get entities by ids', function () {
-            return entityService.getEntitiesByIds(['ROQ1', 'ROQ2'])
+            return entityService.getItems(['ROQ1', 'ROQ2'])
                 .then(function (entities) {
                     assert.ok(entities);
                     assert.equal(2, entities.length);
@@ -87,7 +87,7 @@ describe('services', function () {
         });
 
         it('should create entity with minimum fields', function () {
-            return entityService.createEntity({
+            return entityService.create({
                 id: 'ROQ01',
                 wikiId: 'Q01',
                 name: 'Name',
@@ -101,7 +101,7 @@ describe('services', function () {
         });
 
         it('should throw a dublicate entity id', function () {
-            return entityService.createEntity({
+            return entityService.create({
                 id: 'ROQ01',
                 wikiId: 'Q01',
                 name: 'Name',
@@ -115,7 +115,7 @@ describe('services', function () {
         });
 
         it('should throw a invalid entity', function () {
-            return entityService.createEntity({
+            return entityService.create({
                 id: 'ROQ1565',
                 wikiId: 'Q1565',
                 name: 'Name',
@@ -130,7 +130,7 @@ describe('services', function () {
         });
 
         it('should create entity with all fields', function () {
-            return entityService.createEntity({
+            return entityService.create({
                 id: 'ROQ02',
                 wikiId: 'Q02',
                 name: 'Name 2',
@@ -150,7 +150,7 @@ describe('services', function () {
 
     describe('EntityNamesService', function () {
         it('should throw error on creating an invalid names', function () {
-            return entityNamesService.createEntityNames({ names: 1 })
+            return entityNamesService.create({ names: 1 })
                 .then(function (result) {
                     assert.equal(undefined, result);
                 }).catch(function (error) {
@@ -159,7 +159,7 @@ describe('services', function () {
         });
 
         it('should throw error on creating an invalid item', function () {
-            return entityNamesService.createEntityNames({})
+            return entityNamesService.create({})
                 .then(function (result) {
                     assert.equal(undefined, result);
                 }).catch(function (error) {
@@ -168,7 +168,7 @@ describe('services', function () {
         });
 
         it('should throw error on creating an invalid short names', function () {
-            return entityNamesService.createEntityNames({ names: '1', entityId: 'ROQ1' })
+            return entityNamesService.create({ names: '1', entityId: 'ROQ1' })
                 .then(function (result) {
                     assert.equal(undefined, result);
                 }).catch(function (error) {
@@ -177,11 +177,11 @@ describe('services', function () {
         });
 
         it('should create entity names', function () {
-            return entityNamesService.createEntityNames({ names: 'name', entityId: 'ROQ1' });
+            return entityNamesService.create({ names: ['name'], entityId: 'ROQ1' });
         });
         it('should update entity names', function () {
-            return entityNamesService.updateEntityNames({ names: 'name|name2', entityId: 'ROQ1' })
-                .then(result => assert.equal('name|name2', result.names));
+            return entityNamesService.update({ names: ['name', 'name2'], entityId: 'ROQ1' })
+                .then(result => assert.equal(2, result.names.length));
         });
     });
 });

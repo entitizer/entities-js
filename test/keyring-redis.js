@@ -1,10 +1,19 @@
 'use strict';
 
-const MemoryStorage = require('../lib/keyring/MemoryStorage').MemoryStorage;
+require('dotenv').config();
+
+const RedisStorage = require('../lib/keyring/RedisStorage').RedisStorage;
 const Keyring = require('../lib/keyring/NameKeyring').NameKeyring;
 const assert = require('assert');
+const redis = require('redis');
 
-const storage = new MemoryStorage();
+const client = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASS
+});
+
+const storage = new RedisStorage(client);
 const keyring = new Keyring(storage);
 const lang = 'ro';
 
@@ -14,7 +23,11 @@ const nato = 'NATO';
 const stefanId = '1';
 const natoId = '2';
 
-describe('NameKeyring', function () {
+describe('NameKeyring redis', function () {
+    after(function (done) {
+        client.flushall(done);
+    });
+    
     it('error on no storage', function () {
         assert.throws(function () {
             new Keyring();

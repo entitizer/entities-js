@@ -3,6 +3,15 @@ const Joi = require('joi');
 import { _, Promise } from '../../utils';
 import { UpdateEntitySchema, EntitySchema } from './schemas';
 
+function notEmptyString(entity, field) {
+	if (typeof entity[field] === 'string') {
+		entity[field] = entity[field].trim();
+		if (entity[field].length < 1) {
+			delete entity[field];
+		}
+	}
+}
+
 function normalizeCreate(entity) {
 	entity = _.clone(entity);
 
@@ -15,6 +24,9 @@ function normalizeCreate(entity) {
 	if (entity.data && Object.keys(entity.data).length === 0) {
 		delete entity.data;
 	}
+
+	notEmptyString(entity, 'description');
+	notEmptyString(entity, 'extract');
 
 	if (entity.lang) {
 		entity.lang = entity.lang.toUpperCase();
@@ -37,6 +49,9 @@ function normalizeCreate(entity) {
 }
 
 function normalizeUpdate(entity) {
+
+	notEmptyString(entity, 'description');
+	notEmptyString(entity, 'extract');
 
 	entity.updatedAt = Date.now() / 1000;
 

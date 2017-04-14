@@ -6,18 +6,21 @@ import { UpdateEntitySchema, EntitySchema } from './schemas';
 function normalizeCreate(entity) {
 	entity = _.clone(entity);
 
+	Object.keys(entity).forEach(key => {
+		if (entity[key] === null || (Array.isArray(entity[key]) && entity[key].length === 0)) {
+			delete entity[key];
+		}
+	});
+
+	if (entity.data && Object.keys(entity.data).length === 0) {
+		delete entity.data;
+	}
+
 	if (entity.lang) {
 		entity.lang = entity.lang.toUpperCase();
 	}
 
 	entity.id = formatId(entity.lang, entity.wikiId);
-
-	if (entity.description) {
-		entity.description = _.truncate(entity.description.trim(), { length: 200 });
-	}
-	if (entity.extract) {
-		entity.extract = _.truncate(entity.extract.trim(), { length: 500 });
-	}
 
 	if (_.isString(entity.createdAt)) {
 		entity.createdAt = new Date(entity.createdAt);
@@ -34,12 +37,6 @@ function normalizeCreate(entity) {
 }
 
 function normalizeUpdate(entity) {
-	if (entity.description) {
-		entity.description = _.trunc(entity.description.trim(), 200);
-	}
-	if (entity.extract) {
-		entity.extract = _.trunc(entity.extract.trim(), 500);
-	}
 
 	entity.updatedAt = Date.now() / 1000;
 

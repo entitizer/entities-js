@@ -45,9 +45,9 @@
   "dependencies": {
     "atonic": "^1.0.4",
     "bluebird": "^3.5.0",
-    "entitizer.models": "^0.1.4",
-    "entitizer.models-builder": "^0.1.5",
-    "joi": "^5.1.0",
+    "entitizer.models": "^0.1.5",
+    "entitizer.models-builder": "^0.1.9",
+    "joi": "^10.4.1",
     "lodash": "^4.17.4",
     "node-cache": "^4.1.1",
     "redis": "^2.7.1",

@@ -3,7 +3,7 @@ const Joi = require('joi');
 const vogels = require('vogels');
 import { EntityTypes } from 'entitizer.models';
 
-const ENTITY_TYPES = [EntityTypes.EVENT, EntityTypes.LOCATION, EntityTypes.ORGANIZATION, EntityTypes.PERSON, EntityTypes.PRODUCT];
+const ENTITY_TYPES = [EntityTypes.EVENT, EntityTypes.LOCATION, EntityTypes.ORGANIZATION, EntityTypes.PERSON, EntityTypes.PRODUCT, EntityTypes.CONCEPT];
 // var ENTITY_CATEGORIES = [10, 20, 30, 40, 50, 60, 70, 80, 90];
 
 export const ENTITY_FIELDS = {
@@ -33,10 +33,10 @@ export const EntitySchema = {
 	wikiId: Joi.string().regex(/^Q\d+$/).required(),
 	name: Joi.string().trim().max(200).required(),
 	abbr: Joi.string().trim().max(20),
-	description: Joi.string().trim().max(200),
+	description: Joi.string().trim().max(200).truncate(),
 	wikiPageId: Joi.number().integer(),
 	aliases: vogels.types.stringSet(),
-	extract: Joi.string().trim().max(500),
+	extract: Joi.string().trim().max(500).truncate(),
 	wikiTitle: Joi.string().trim().max(200),
 	enWikiTitle: Joi.string().trim().max(200),
 	wikiImage: Joi.string().trim().max(200),

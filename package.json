@@ -45,6 +45,7 @@
   "dependencies": {
     "atonic": "^1.0.4",
     "bluebird": "^3.5.0",
+    "concepts-parser": "^1.1.1",
     "entitizer.models": "^0.1.5",
     "entitizer.models-builder": "^0.1.9",
     "joi": "^10.4.1",

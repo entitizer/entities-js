@@ -55,7 +55,7 @@ export class MemoryStorage<T> implements IKeyStorage<T> {
         });
     }
 
-    del(key: string, items: T[]): Promise<number> {
+    removeItems(key: string, items: T[]): Promise<number> {
         return this.get(key).then(data => {
             if (!data) {
                 return 0;

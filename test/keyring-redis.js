@@ -59,6 +59,6 @@ describe('NameKeyring redis', function () {
         return keyring.addName('10', 'Ministerul Culturii', lang).then(ids => assert.equal(1, ids));
     });
     it('addName: Ministerul Culturii 2', function () {
-        return keyring.addName('11', 'Ministerul Culturii', lang).then(ids => assert.equal(1, ids));
+        return keyring.addName('11', 'Ministerul Culturii', lang).then(ids => assert.equal(2, ids));
     });
 });

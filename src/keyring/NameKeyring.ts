@@ -16,14 +16,17 @@ export class NameKeyring {
         this._storage = storage;
     }
 
-    /**
-     * Gets entities ids with the same name
-     * @param name An entity name
-     * @param lang Name language
-     */
+    getManyIds(keys: string[]): Promise<IPlainObject<string[]>> {
+        return this._storage.mget(keys);
+    }
+
     getIds(name: string, lang: string): Promise<string[]> {
         const key = NameKeyring.formatKey(name, lang);
 
+        return this.getIdsByKey(key);
+    }
+
+    getIdsByKey(key: string): Promise<string[]> {
         return this._storage.get(key).then(value => value || []);
     }
 
@@ -59,7 +62,7 @@ export class NameKeyring {
                 return;
             }
             keys[key] = true;
-            return this._storage.del(key, [entityId]).then(r => {
+            return this._storage.removeItems(key, [entityId]).then(r => {
                 count += r;
             });
         }).then(() => count);

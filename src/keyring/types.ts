@@ -8,6 +8,6 @@ export interface IKeyStorage<T> {
     add(key: string, items: T[]): Promise<number>;
     get(key: string): Promise<T[]>;
     mget(keys: string[]): Promise<IPlainObject<T[]>>
-    del(key: string, items: T[]): Promise<number>;
+    removeItems(key: string, items: T[]): Promise<number>;
     remove(key: string): Promise<number>;
 }

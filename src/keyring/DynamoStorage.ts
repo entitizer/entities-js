@@ -59,7 +59,7 @@ export class DynamoStorage<T> implements IKeyStorage<T> {
             .then(() => items.length);
     }
 
-    del(key: string, values: T[]): Promise<number> {
+    removeItems(key: string, values: T[]): Promise<number> {
         const params: any = { overwrite: false };
         params.UpdateExpression = 'DELETE #data :value';
         // params.ConditionExpression = '#year = :current';

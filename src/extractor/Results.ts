@@ -115,13 +115,13 @@ export class Results {
     }
 
     private addResultEntity(entity: Entity, key: string) {
+        if (!entity) {
+            return;
+        }
+
         debug('addResultEntity', key, entity.id);
         if (this.foundKeys[key]) {
             throw new Error('key has been explored: ' + key);
-        }
-
-        if (!entity) {
-            return;
         }
 
         this.foundKeys[key] = true;

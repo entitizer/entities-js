@@ -1,6 +1,6 @@
 
 import { PlainObject, Observable } from './utils';
-import { OneEntityType, Entity, EntityNames } from './entities';
+import { OneEntityType, Entity, EntityUniqueName, EntityUniqueNameID } from './entities';
 
 export interface RepAccessOptions {
     /**
@@ -19,20 +19,21 @@ export interface RepUpdateData<T> {
     // inc?: { [index: (keyof T)]: number }
 }
 
-export interface RootRepository {
-    delete(id: string): Observable<boolean>
-    // exists(id: string): Bluebird<boolean>
-    // count(data?: RepGetData): Observable<number>
-}
-
-export interface Repository<T extends OneEntityType> extends RootRepository {
+export interface RootRepository<T extends OneEntityType> {
     create(data: T, options?: RepAccessOptions): Observable<T>
     update(data: RepUpdateData<T>, options?: RepUpdateOptions): Observable<T>
-    getById(id: string, options?: RepAccessOptions): Observable<T>
 }
 
-export interface EntityRepository extends Repository<Entity> {
+export interface Repository<T extends OneEntityType, ID> extends RootRepository<T> {
+    getById(id: ID, options?: RepAccessOptions): Observable<T>
+    delete(id: ID): Observable<T>
 }
 
-export interface EntityNamesRepository extends Repository<EntityNames> {
+export interface EntityRepository extends Repository<Entity, string> {
+}
+
+
+
+export interface EntityUniqueNameRepository extends Repository<EntityUniqueName, EntityUniqueNameID> {
+    getItemsByEntityId(entityId: string): Observable<EntityUniqueName>
 }

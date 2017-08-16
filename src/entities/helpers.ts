@@ -1,6 +1,7 @@
 
 const atonic = require('atonic');
 import { Entity } from './entities';
+import { md5 } from '../utils';
 
 export class EntityHelper {
     static createId(entity: { lang: string, wikiId: string }): string {
@@ -8,39 +9,17 @@ export class EntityHelper {
     }
 }
 
-export class EntityNamesHelper {
-
-    static formatNames(entity: Entity): string[] {
-        let names = [];
-
-        if (entity.name && entity.name.length) {
-            names.push(entity.name);
-        }
-        if (entity.wikiTitle && entity.wikiTitle.length) {
-            names.push(entity.wikiTitle);
-        }
-        // if (entity.abbr && entity.abbr.length) {
-        //     names.push(entity.abbr);
-        // }
-        if (entity.aliases) {
-            names = names.concat(entity.aliases);
-        }
-
-        return EntityNamesHelper.filterNames(names);
+export class EntityUniqueNameHelper {
+    static formatKey(data: { uniqueName: string, lang: string }): string {
+        return md5([data.lang.trim().toLowerCase(), data.uniqueName.trim()].join('|'));
     }
-
-    static filterNames(names: string[]): string[] {
-        const keys = {};
-        return names.filter(name => {
-            name = EntityNamesHelper.formatUniqueName(name);
-            if (!name || name.length < 2 || keys[name]) {
-                return false;
-            }
-            keys[name] = true;
-            return true;
-        });
-    }
-
+    /**
+     * Format an unique name
+     * @param name Name to be transformed in an unique name
+     * @example <caption>Format an unique name</caption>
+     * const uname = formatUniqueName('Ștefan cel Mare și Sfânt');
+     * // uname === 'stefan cel mare si sfant'
+     */
     static formatUniqueName(name: string): string {
         name = removeSymbolsFromText(name);
         const words = name.split(/\s+/g);
@@ -54,10 +33,17 @@ export class EntityNamesHelper {
             }
         } else {
             name = atonic(name);
-            name = name.toLowerCase();
+            // not upper case: abbr, etc.
+            if (name !== name.toUpperCase()) {
+                name = name.toLowerCase();
+            }
         }
 
         return name;
+    }
+
+    static isValidUniqueName(uname: string) {
+        return typeof uname === 'string' && uname.trim().length > 1;
     }
 }
 

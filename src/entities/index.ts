@@ -1,4 +1,4 @@
 
 export * from './entities';
-export { EntityHelper, EntityNamesHelper } from './helpers';
-export { Validator, EntityValidator, EntityNamesValidator } from './validator';
+export { EntityHelper, EntityUniqueNameHelper } from './helpers';
+export { Validator, EntityValidator, EntityUniqueNameValidator } from './validator';

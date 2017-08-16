@@ -31,7 +31,7 @@ export const createEntity = Joi.object().keys({
     extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
     wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
     wikiImage: Joi.string().min(entityWikiImageMinLength).max(entityWikiImageMaxLength),
-    type: Joi.valid('EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT'),
+    type: Joi.valid('EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT', 'CONCEPT'),
     types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
     cc2: Joi.string().regex(langRegex),
     rank: Joi.number().integer().positive(),
@@ -43,10 +43,12 @@ export const createEntity = Joi.object().keys({
     /**
      * updated at timestamp
      */
-    updatedAt: Joi.number().integer().positive()
+    updatedAt: Joi.number().integer().positive(),
+
+    redirectId: Joi.string().regex(entityIdRegex).required()
 }).required();
 
 export const updateEntity = Joi.object().required();
 
-export const createEntityNames = Joi.object().required();
-export const updateEntityNames = Joi.object().required();
+export const createEntityUniqueName = Joi.object().required();
+export const updateEntityUniqueName = Joi.object().required();

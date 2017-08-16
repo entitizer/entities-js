@@ -10,7 +10,9 @@ export class EntityCreate extends CreateUseCase<Entity> {
     }
 
     protected onExecuting(data: Entity): Entity {
-        data.id = EntityHelper.createId({ lang: data.lang, wikiId: data.wikiId });
+        const id = EntityHelper.createId({ lang: data.lang, wikiId: data.wikiId });
+        const createdAt = Math.trunc(Date.now() / 1000);
+        data = Object.assign({}, data, { id, createdAt });
         return super.onExecuting(data);
     }
 }

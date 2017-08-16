@@ -11,13 +11,18 @@ export class EntityUniqueNameCreate extends CreateUseCase<EntityUniqueName> {
     }
 
     protected onExecuting(data: EntityUniqueName): EntityUniqueName {
-        const ndata = Object.assign({}, data);
-        ndata.uniqueName = EntityUniqueNameHelper.formatUniqueName(data.name);
-        if (!EntityUniqueNameHelper.isValidUniqueName(ndata.uniqueName)) {
-            throw new DataValidationError({ message: 'Invalid unique name:' + ndata.uniqueName });
-        }
-        ndata.key = EntityUniqueNameHelper.formatKey({ uniqueName: ndata.uniqueName, lang: ndata.lang });
+        const createdAt = Math.trunc(Date.now() / 1000);
 
-        return super.onExecuting(ndata);
+        data = Object.assign({ createdAt }, data);
+
+        data.uniqueName = EntityUniqueNameHelper.formatUniqueName(data.name);
+        
+        if (!EntityUniqueNameHelper.isValidUniqueName(data.uniqueName)) {
+            throw new DataValidationError({ message: 'Invalid unique name:' + data.uniqueName });
+        }
+
+        data.key = EntityUniqueNameHelper.formatKey({ uniqueName: data.uniqueName, lang: data.lang });
+
+        return super.onExecuting(data);
     }
 }

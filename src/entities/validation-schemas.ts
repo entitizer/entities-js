@@ -39,7 +39,7 @@ export const createEntity = Joi.object().keys({
     /**
      * created at timestamp
      */
-    createdAt: Joi.number().integer().positive(),
+    createdAt: Joi.number().integer().positive().required(),
     /**
      * updated at timestamp
      */

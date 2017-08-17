@@ -4,7 +4,7 @@ import { Entity, EntityValidator, EntityHelper } from '../../entities';
 import { EntityRepository } from '../../repository';
 import { Observable } from '../../utils';
 
-export class EntityCreate extends CreateUseCase<Entity> {
+export class EntityCreate extends CreateUseCase<Entity, string> {
     constructor(repository: EntityRepository) {
         super('EntityCreate', EntityValidator.instance, repository);
     }

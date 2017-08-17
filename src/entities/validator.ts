@@ -1,16 +1,16 @@
 
 import { DataValidationError } from '../errors';
 import { ValidationOptions, ObjectSchema } from 'joi';
-import { Entity, EntityUniqueName } from './entities';
+import { Entity, EntityUniqueName, EntityUniqueNameID } from './entities';
 import { RepUpdateData } from '../repository';
 import { createEntity, createEntityUniqueName, updateEntity, updateEntityUniqueName } from './validation-schemas';
 
-export interface Validator<T> {
+export interface Validator<T, ID> {
     create(data: T, options?: ValidationOptions): T
-    update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T>
+    update(data: RepUpdateData<T, ID>, options?: ValidationOptions): RepUpdateData<T, ID>
 }
 
-export class BaseValidator<T> implements Validator<T> {
+export class BaseValidator<T, ID> implements Validator<T, ID> {
 
     constructor(private name: string, private createSchema: ObjectSchema, private updateSchema?: ObjectSchema) { }
 
@@ -18,7 +18,7 @@ export class BaseValidator<T> implements Validator<T> {
         return validateSchema(this.createSchema, data, options);
     }
 
-    update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T> {
+    update(data: RepUpdateData<T, ID>, options?: ValidationOptions): RepUpdateData<T, ID> {
         if (this.updateSchema) {
             return validateSchema(this.updateSchema, data, options);
         }
@@ -37,7 +37,7 @@ export function validateSchema<T>(schema: ObjectSchema, data: T, options?: Valid
     return result.value;
 }
 
-export class EntityValidator extends BaseValidator<Entity> {
+export class EntityValidator extends BaseValidator<Entity, string> {
     constructor() {
         super('Entity', createEntity, updateEntity);
     }
@@ -53,7 +53,7 @@ export class EntityValidator extends BaseValidator<Entity> {
     }
 }
 
-export class EntityUniqueNameValidator extends BaseValidator<EntityUniqueName> {
+export class EntityUniqueNameValidator extends BaseValidator<EntityUniqueName, EntityUniqueNameID> {
     constructor() {
         super('EntityUniqueName', createEntityUniqueName, updateEntityUniqueName);
     }

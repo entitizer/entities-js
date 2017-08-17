@@ -10,7 +10,7 @@ export class EntityUniqueNameDeleteEntity extends BaseUseCase<EntityUniqueName[]
     }
 
     protected innerExecute(entityId: string): Observable<EntityUniqueName[]> {
-        return this.repository.getItemsByEntityId(entityId)
+        return this.repository.getByEntityId(entityId)
             .mergeMap(items => Observable.from(items)
                 .mergeMap(item => this.repository.delete({ entityId: item.entityId, key: item.key }))
                 .combineAll());

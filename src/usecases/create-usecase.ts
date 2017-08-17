@@ -4,8 +4,8 @@ import { BaseUseCase } from './usecase';
 import { Validator, OneEntityType } from '../entities';
 import { RootRepository } from '../repository';
 
-export class CreateUseCase<T extends OneEntityType> extends BaseUseCase<T, T> {
-    constructor(name: string, private validator: Validator<T>, protected repository: RootRepository<T>) {
+export class CreateUseCase<T extends OneEntityType, ID> extends BaseUseCase<T, T> {
+    constructor(name: string, private validator: Validator<T, ID>, protected repository: RootRepository<T>) {
         super(name);
     }
 

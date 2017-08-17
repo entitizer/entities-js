@@ -63,6 +63,8 @@ export type EntityUniqueNameID = {
     key: string
 }
 
+export type EntityID = string;
+
 export type EntityUniqueName = {
     entityId: string
     lang: string

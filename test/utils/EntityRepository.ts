@@ -1,9 +1,13 @@
 
 import { Observable } from '@reactivex/rxjs';
-import { Entity, DataConflictError, DataNotFoundError, EntityRepository, RepUpdateData } from '../../src';
+import { Entity, DataConflictError, DataNotFoundError, EntityRepository, RepUpdateData, RepAccessOptions } from '../../src';
 
 export class MemoryEntityRepository implements EntityRepository {
     private STORE = {};
+
+    getByIds(ids: string[], options?: RepAccessOptions): Observable<Entity[]> {
+        throw new Error("Method not implemented.");
+    }
 
     create(data: Entity): Observable<Entity> {
         if (this.STORE[data.id]) {
@@ -23,7 +27,7 @@ export class MemoryEntityRepository implements EntityRepository {
 
         return Observable.of(entity);
     }
-    update(data: RepUpdateData<Entity>, options?: any): Observable<Entity> {
+    update(data: RepUpdateData<Entity, string>, options?: any): Observable<Entity> {
         throw new Error("Method not implemented.");
     }
 }

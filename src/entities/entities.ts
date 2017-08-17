@@ -5,7 +5,7 @@ export const EntityType = createEnum(['EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRO
 export type EntityType = keyof typeof EntityType;
 
 export type Entity = {
-    id: string
+    id?: string
     lang?: string
     wikiId?: string
     name?: string

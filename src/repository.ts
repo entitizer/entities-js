@@ -35,5 +35,5 @@ export interface EntityRepository extends Repository<Entity, string> {
 
 
 export interface EntityUniqueNameRepository extends Repository<EntityUniqueName, EntityUniqueNameID> {
-    getItemsByEntityId(entityId: string): Observable<EntityUniqueName>
+    getItemsByEntityId(entityId: string): Observable<EntityUniqueName[]>
 }

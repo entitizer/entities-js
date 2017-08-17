@@ -1,7 +1,7 @@
 
-import { EntityUniqueNameHelper } from '../lib/entities';
+import { EntityUniqueNameHelper } from '../src';
 import * as assert from 'assert';
-import {describe, it} from 'mocha';
+import { describe, it } from 'mocha';
 
 describe('format entity unique name', function () {
     describe('programming languages', function () {

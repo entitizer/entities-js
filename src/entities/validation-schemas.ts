@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 
 const wikiIdRegex = /^Q\d+$/;
 const entityIdRegex = /^[A-Z]{2}Q\d+$/;
-const langRegex = /^[a-z]$/;
+const langRegex = /^[a-z]{2}$/;
 const entityNameMaxLength = 200;
 const entityNameMinLength = 2;
 const entityAbbrMaxLength = 20;
@@ -21,7 +21,7 @@ const entityTypeMinLength = 2;
 
 export const createEntity = Joi.object().keys({
     id: Joi.string().regex(entityIdRegex).required(),
-    lang: Joi.string().regex(langRegex).required(),
+    lang: Joi.string().trim().lowercase().regex(langRegex).required(),
     wikiId: Joi.string().regex(wikiIdRegex).required(),
     name: Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required(),
     abbr: Joi.string().min(entityAbbrMinLength).max(entityAbbrMaxLength),
@@ -45,7 +45,7 @@ export const createEntity = Joi.object().keys({
      */
     updatedAt: Joi.number().integer().positive(),
 
-    redirectId: Joi.string().regex(entityIdRegex).required()
+    redirectId: Joi.string().regex(entityIdRegex)
 }).required();
 
 export const updateEntity = Joi.object().required();

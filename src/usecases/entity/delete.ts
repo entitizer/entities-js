@@ -12,10 +12,6 @@ export class EntityDelete extends BaseUseCase<Entity, string> {
 
     protected innerExecute(id: string): Observable<Entity> {
         return this.entityUniqueNameDeleteEntity.execute(id)
-            .reduce((acc, value) => {
-                acc.push(value);
-                return acc;
-            }, [])
             .mergeMap(result => this.repository.delete(id));
     }
 }

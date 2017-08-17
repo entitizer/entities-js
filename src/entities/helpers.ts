@@ -1,10 +1,17 @@
 
 const atonic = require('atonic');
 import { Entity } from './entities';
+import { DataValidationError } from '../errors';
 import { md5 } from '../utils';
 
 export class EntityHelper {
     static createId(entity: { lang: string, wikiId: string }): string {
+        if (typeof entity.lang !== 'string') {
+            throw new DataValidationError({ message: `param 'lang' must be a string` });
+        }
+        if (typeof entity.wikiId !== 'string') {
+            throw new DataValidationError({ message: `param 'wikiId' must be a string` });
+        }
         return [entity.lang.trim().toUpperCase(), entity.wikiId.trim().toUpperCase()].join('');
     }
 }

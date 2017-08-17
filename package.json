@@ -5,8 +5,13 @@
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "pretest": "npm run tsc",
-    "test": "mocha -t 5000",
+    "clean_test": "shx rm -rf test-js",
+    "clean_lib": "shx rm -rf lib",
+    "clean_types": "shx rm -rf types",
+    "build_test": "npm-run-all build_lib clean_test && tsc --project ./test --pretty",
+    "test_mocha": "mocha --opts test/default.opts test-js",
+    "test": "npm-run-all build_test test_mocha clean_test",
+    "build_lib": "npm-run-all clean_lib clean_types tsc",
     "tsc": "tsc",
     "tscw": "tsc -w",
     "preversion": "npm run tsc",
@@ -32,10 +37,13 @@
   },
   "homepage": "https://github.com/entitizer/entities-js#readme",
   "devDependencies": {
+    "@types/chai": "^4.0.3",
     "@types/joi": "^10.0.1",
     "@types/node": "^7.x.x",
+    "chai": "^4.1.1",
     "debug": "^2.6.3",
     "mocha": "^3.2.0",
+    "shx": "^0.2.2",
     "typescript": "^2.2.2"
   },
   "dependencies": {

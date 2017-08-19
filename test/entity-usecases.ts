@@ -1,5 +1,5 @@
 
-import { EntityUniqueNameHelper, Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../src';
+import { Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../src';
 import { MemoryEntityRepository } from './utils/EntityRepository';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';

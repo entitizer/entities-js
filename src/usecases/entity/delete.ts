@@ -1,12 +1,12 @@
 
 import { Observable, Observer } from '../../utils';
 import { BaseUseCase } from '../usecase';
-import { EntityUniqueNameDeleteEntity } from '../entity-uniquename/delete-entity';
+import { UniqueNameDeleteEntity } from '../uniquename/delete-entity';
 import { Validator, Entity } from '../../entities';
 import { EntityRepository } from '../../repository';
 
 export class EntityDelete extends BaseUseCase<Entity, string> {
-    constructor(protected repository: EntityRepository, private entityUniqueNameDeleteEntity: EntityUniqueNameDeleteEntity) {
+    constructor(protected repository: EntityRepository, private entityUniqueNameDeleteEntity: UniqueNameDeleteEntity) {
         super('EntityDelete');
     }
 

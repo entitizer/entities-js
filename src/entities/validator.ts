@@ -1,9 +1,9 @@
 
 import { DataValidationError } from '../errors';
 import { ValidationOptions, ObjectSchema } from 'joi';
-import { Entity, EntityUniqueName, EntityUniqueNameID } from './entities';
+import { Entity, UniqueName, UniqueNameID } from './entities';
 import { RepUpdateData } from '../repository';
-import { createEntity, createEntityUniqueName, updateEntity, updateEntityUniqueName } from './validation-schemas';
+import { createEntity, createUniqueName, updateEntity, updateUniqueName } from './validation-schemas';
 
 export interface Validator<T, ID> {
     create(data: T, options?: ValidationOptions): T
@@ -53,18 +53,18 @@ export class EntityValidator extends BaseValidator<Entity, string> {
     }
 }
 
-export class EntityUniqueNameValidator extends BaseValidator<EntityUniqueName, EntityUniqueNameID> {
+export class UniqueNameValidator extends BaseValidator<UniqueName, UniqueNameID> {
     constructor() {
-        super('EntityUniqueName', createEntityUniqueName, updateEntityUniqueName);
+        super('UniqueName', createUniqueName, updateUniqueName);
     }
 
-    private static _instance: EntityUniqueNameValidator;
+    private static _instance: UniqueNameValidator;
 
     static get instance() {
-        if (!EntityUniqueNameValidator._instance) {
-            EntityUniqueNameValidator._instance = new EntityUniqueNameValidator();
+        if (!UniqueNameValidator._instance) {
+            UniqueNameValidator._instance = new UniqueNameValidator();
         }
 
-        return EntityUniqueNameValidator._instance;
+        return UniqueNameValidator._instance;
     }
 }

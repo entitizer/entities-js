@@ -50,5 +50,5 @@ export const createEntity = Joi.object().keys({
 
 export const updateEntity = Joi.object().required();
 
-export const createEntityUniqueName = Joi.object().required();
-export const updateEntityUniqueName = Joi.object().required();
+export const createUniqueName = Joi.object().required();
+export const updateUniqueName = Joi.object().required();

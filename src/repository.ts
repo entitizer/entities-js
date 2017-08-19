@@ -1,6 +1,6 @@
 
 import { PlainObject, Observable } from './utils';
-import { OneEntityType, Entity, EntityUniqueName, EntityUniqueNameID } from './entities';
+import { OneEntityType, Entity, UniqueName, UniqueNameID } from './entities';
 
 export interface RepAccessOptions {
     /**
@@ -36,7 +36,7 @@ export interface EntityRepository extends Repository<Entity, string> {
 
 
 
-export interface EntityUniqueNameRepository extends Repository<EntityUniqueName, EntityUniqueNameID> {
-    getByEntityId(entityId: string): Observable<EntityUniqueName[]>
+export interface UniqueNameRepository extends Repository<UniqueName, UniqueNameID> {
+    getByEntityId(entityId: string): Observable<UniqueName[]>
     getEntityIdsByKeys(keys: string[]): Observable<PlainObject<string[]>>
 }

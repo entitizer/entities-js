@@ -16,7 +16,7 @@ export class EntityHelper {
     }
 }
 
-export class EntityUniqueNameHelper {
+export class UniqueNameHelper {
     static formatKey(data: { uniqueName: string, lang: string }): string {
         return [data.lang.trim().toLowerCase(), md5(data.uniqueName.trim())].join('');
     }

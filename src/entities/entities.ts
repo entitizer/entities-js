@@ -58,14 +58,14 @@ export const EntityFields = createEnum([
 
 export type EntityFields = keyof typeof EntityFields;
 
-export type EntityUniqueNameID = {
+export type UniqueNameID = {
     entityId: string
     key: string
 }
 
 export type EntityID = string;
 
-export type EntityUniqueName = {
+export type UniqueName = {
     entityId: string
     lang: string
     name: string
@@ -80,6 +80,6 @@ export type EntityUniqueName = {
     createdAt?: number
 }
 
-export const EntityUniqueNameFields = createEnum(['entityId', 'lang', 'name', 'uniqueName', 'key', 'createdAt']);
-export type EntityUniqueNameFields = keyof typeof EntityUniqueNameFields;
-export type OneEntityType = Entity | EntityUniqueName;
+export const UniqueNameFields = createEnum(['entityId', 'lang', 'name', 'uniqueName', 'key', 'createdAt']);
+export type UniqueNameFields = keyof typeof UniqueNameFields;
+export type OneEntityType = Entity | UniqueName;

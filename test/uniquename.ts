@@ -1,5 +1,5 @@
 
-import { EntityUniqueNameHelper } from '../src';
+import { UniqueNameHelper } from '../src';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 
@@ -21,7 +21,7 @@ describe('format entity unique name', function () {
         };
         Object.keys(data).forEach(name => {
             it('format ' + name + '=' + data[name], function (done) {
-                const uname = EntityUniqueNameHelper.formatUniqueName(name);
+                const uname = UniqueNameHelper.formatUniqueName(name);
                 assert.equal(data[name], uname);
                 done();
             });
@@ -36,7 +36,7 @@ describe('format entity unique name', function () {
         };
         Object.keys(data).forEach(name => {
             it('format ' + name + '=' + data[name], function (done) {
-                const uname = EntityUniqueNameHelper.formatUniqueName(name);
+                const uname = UniqueNameHelper.formatUniqueName(name);
                 assert.equal(data[name], uname);
                 done();
             });

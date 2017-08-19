@@ -1,13 +1,14 @@
 
-import { EntityUniqueNameHelper, Entity, EntityCreate, EntityDelete, DataValidationError } from '../src';
+import { EntityUniqueNameHelper, Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../src';
 import { MemoryEntityRepository } from './utils/EntityRepository';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 describe('Entity UseCases', function () {
+    const entityRepository = new MemoryEntityRepository();
     describe('EntityCreate', function () {
-        const createEntity = new EntityCreate(new MemoryEntityRepository());
+        const createEntity = new EntityCreate(entityRepository);
         const entities = {
             noLang: {
                 entity: {
@@ -45,6 +46,51 @@ describe('Entity UseCases', function () {
                     result => {
                         if (data.error) {
                             return done(new Error('Should not pass'));
+                        }
+                        done();
+                    },
+                    error => {
+                        if (!data.error) {
+                            return done(error);
+                        }
+
+                        data.error.type && assert.ok(error instanceof data.error.type);
+                        assert.ok(error.message.indexOf(data.error.message) > 0, error.message);
+                        done();
+                    }
+                );
+            });
+        });
+    });
+    describe('EntityGetById', function () {
+        const getEntityById = new EntityGetById(entityRepository);
+        const entities = {
+            ENQ41: {
+                entity: {
+                    wikiId: 'Q41',
+                    lang: 'en',
+                    name: 'Greece'
+                }
+            },
+            Q41: {
+                entity: undefined
+            }
+        };
+
+        Object.keys(entities).forEach(id => {
+            const data = entities[id];
+            it('should ' + (data.error ? 'fail' : 'success') + ' get entity by id == ' + id, function (done) {
+                getEntityById.execute(id).subscribe(
+                    entity => {
+                        if (data.error) {
+                            return done(new Error('Should not pass'));
+                        }
+                        if (data.entity === entity) {
+                            return done();
+                        }
+
+                        for (let key in data.entity) {
+                            assert.equal(entity[key], data.entity[key]);
                         }
                         done();
                     },

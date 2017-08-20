@@ -1,8 +1,8 @@
 
+const crypto = require('crypto');
 const atonic = require('atonic');
 import { Entity } from './entities';
 import { DataValidationError } from '../errors';
-import { md5 } from '../utils';
 
 export class EntityHelper {
     static createId(entity: { lang: string, wikiId: string }): string {
@@ -18,7 +18,8 @@ export class EntityHelper {
 
 export class UniqueNameHelper {
     static formatKey(data: { uniqueName: string, lang: string }): string {
-        return [data.lang.trim().toLowerCase(), md5(data.uniqueName.trim())].join('');
+        const key = crypto.createHash('md5').update(data.uniqueName.trim(), 'utf8').digest('base64').replace(/[=]+$/, '');
+        return [data.lang.trim().toLowerCase(), key].join('');
     }
     /**
      * Format an unique name

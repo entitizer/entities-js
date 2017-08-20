@@ -50,5 +50,16 @@ export const createEntity = Joi.object().keys({
 
 export const updateEntity = Joi.object().required();
 
-export const createUniqueName = Joi.object().required();
+export const createUniqueName = Joi.object().keys({
+    entityId: Joi.string().regex(entityIdRegex).required(),
+    lang: Joi.string().trim().lowercase().regex(langRegex).required(),
+    name: Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required(),
+    uniqueName: Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required(),
+    key: Joi.string().min(16).max(50).required(),
+    /**
+     * created at timestamp
+     */
+    createdAt: Joi.number().integer().positive().required(),
+}).required();
+
 export const updateUniqueName = Joi.object().required();

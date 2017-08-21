@@ -31,7 +31,7 @@ export const createEntity = Joi.object().keys({
     extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
     wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
     wikiImage: Joi.string().min(entityWikiImageMinLength).max(entityWikiImageMaxLength),
-    type: Joi.valid('EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT', 'CONCEPT').required(),
+    type: Joi.valid('E', 'L', 'O', 'H', 'P', 'C').required(),
     types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
     cc2: Joi.string().regex(langRegex),
     rank: Joi.number().integer().positive(),

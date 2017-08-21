@@ -1,8 +1,9 @@
 
 import { createEnum, StringPlainObject, PlainObject } from '../utils';
 
-export const EntityType = createEnum(['EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT', 'CONCEPT']);
+export const EntityType = createEnum(['E', 'L', 'O', 'H', 'P', 'C']);
 export type EntityType = keyof typeof EntityType;
+export type EntityData = PlainObject<string[]>;
 
 export type Entity = {
     id?: string
@@ -19,7 +20,7 @@ export type Entity = {
     types?: string[]
     cc2?: string
     rank?: number
-    data?: PlainObject<string[]>
+    data?: EntityData
     /**
      * created at timestamp
      */

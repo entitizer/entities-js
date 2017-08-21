@@ -11,11 +11,11 @@ describe('EntityValidator', function () {
                 null: null,
                 undefined: undefined,
                 noType: { id: 'ROQ21', lang: 'ro', name: 'name', wikiId: 'Q21', createdAt: 1213232 },
-                noId: { lang: 'ro', name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'CONCEPT' },
-                noName: { lang: 'ro', id: 'ROQ21', wikiId: 'Q21', createdAt: 1213232, type: 'CONCEPT' },
-                noLang: { name: 'ro', id: 'ROQ21', wikiId: 'Q21', createdAt: 1213232, type: 'CONCEPT' },
-                invalidLangWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q21', createdAt: 1213232, type: 'CONCEPT' },
-                invalidIdWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q22', createdAt: 1213232, type: 'CONCEPT' }
+                noId: { lang: 'ro', name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
+                noName: { lang: 'ro', id: 'ROQ21', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
+                noLang: { name: 'ro', id: 'ROQ21', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
+                invalidLangWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
+                invalidIdWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q22', createdAt: 1213232, type: 'C' }
             };
             Object.keys(data).forEach(name => {
                 it('fail create ' + name, function () {
@@ -28,7 +28,7 @@ describe('EntityValidator', function () {
 
         describe('valid data', function () {
             const data = {
-                ROQ21: { id: 'ROQ21', lang: 'ro', name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'CONCEPT' }
+                ROQ21: { id: 'ROQ21', lang: 'ro', name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'C' }
             };
             Object.keys(data).forEach(name => {
                 it('success create ' + name, function () {

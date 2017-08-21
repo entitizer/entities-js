@@ -35,7 +35,7 @@ describe('Entity UseCases', function () {
                     wikiId: 'Q41',
                     lang: 'en',
                     name: 'Greece',
-                    type: 'LOCATION'
+                    type: 'L'
                 }
             }
         };

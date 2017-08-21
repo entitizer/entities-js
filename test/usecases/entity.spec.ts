@@ -1,6 +1,6 @@
 
-import { Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../src';
-import { MemoryEntityRepository } from './utils/EntityRepository';
+import { Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../../src';
+import { MemoryEntityRepository } from './EntityRepository';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
@@ -34,7 +34,8 @@ describe('Entity UseCases', function () {
                 entity: {
                     wikiId: 'Q41',
                     lang: 'en',
-                    name: 'Greece'
+                    name: 'Greece',
+                    type: 'LOCATION'
                 }
             }
         };

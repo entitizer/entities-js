@@ -101,9 +101,6 @@ describe('EntityHelper', function () {
             assert.throws(function () {
                 EntityHelper.createId({ lang: null, wikiId: null });
             });
-            assert.throws(function () {
-                EntityHelper.createId({ lang: 'en', wikiId: '1' });
-            });
         });
         it('should start with language code', function () {
             const lang = 'RU';

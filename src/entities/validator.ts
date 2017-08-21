@@ -4,6 +4,7 @@ import { ValidationOptions, ObjectSchema } from 'joi';
 import { Entity, UniqueName, UniqueNameID } from './entities';
 import { RepUpdateData } from '../repository';
 import { createEntity, createUniqueName, updateEntity, updateUniqueName } from './validation-schemas';
+import { EntityHelper } from './helpers';
 
 export interface Validator<T, ID> {
     create(data: T, options?: ValidationOptions): T
@@ -51,6 +52,13 @@ export class EntityValidator extends BaseValidator<Entity, string> {
 
         return EntityValidator._instance;
     }
+
+    create(data: Entity, options?: ValidationOptions): Entity {
+        if (data && data.id !== EntityHelper.createId({ lang: data.lang, wikiId: data.wikiId })) {
+            throw new DataValidationError({ message: `id is invalid!` });
+        }
+        return super.create(data, options);
+    }
 }
 
 export class UniqueNameValidator extends BaseValidator<UniqueName, UniqueNameID> {
@@ -66,5 +74,12 @@ export class UniqueNameValidator extends BaseValidator<UniqueName, UniqueNameID>
         }
 
         return UniqueNameValidator._instance;
+    }
+
+    create(data: UniqueName, options?: ValidationOptions): UniqueName {
+        if (data && data.entityId && data.lang !== data.entityId.substr(0, 2).toLowerCase()) {
+            throw new DataValidationError({ message: `lang or entityId are invalid!` });
+        }
+        return super.create(data, options);
     }
 }

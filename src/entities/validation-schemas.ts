@@ -31,11 +31,11 @@ export const createEntity = Joi.object().keys({
     extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
     wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
     wikiImage: Joi.string().min(entityWikiImageMinLength).max(entityWikiImageMaxLength),
-    type: Joi.valid('EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT', 'CONCEPT'),
+    type: Joi.valid('EVENT', 'LOCATION', 'ORG', 'PERSON', 'PRODUCT', 'CONCEPT').required(),
     types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
     cc2: Joi.string().regex(langRegex),
     rank: Joi.number().integer().positive(),
-    data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.string().min(1).max(200).required()),
+    data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.array().items(Joi.string().trim().min(1).max(200))),
     /**
      * created at timestamp
      */
@@ -53,13 +53,13 @@ export const updateEntity = Joi.object().required();
 export const createUniqueName = Joi.object().keys({
     entityId: Joi.string().regex(entityIdRegex).required(),
     lang: Joi.string().trim().lowercase().regex(langRegex).required(),
-    name: Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required(),
-    uniqueName: Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required(),
-    key: Joi.string().min(16).max(50).required(),
+    name: Joi.string().trim().min(entityNameMinLength).max(entityNameMaxLength).required(),
+    uniqueName: Joi.string().trim().min(entityNameMinLength).max(entityNameMaxLength).required(),
+    key: Joi.string().trim().min(16).max(50).required(),
     /**
      * created at timestamp
      */
-    createdAt: Joi.number().integer().positive().required(),
+    createdAt: Joi.number().integer().positive().required()
 }).required();
 
 export const updateUniqueName = Joi.object().required();

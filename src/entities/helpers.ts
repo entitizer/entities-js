@@ -18,6 +18,9 @@ export class EntityHelper {
 
 export class UniqueNameHelper {
     static formatKey(data: { uniqueName: string, lang: string }): string {
+        if (!UniqueNameHelper.isValidUniqueName(data.uniqueName)) {
+            throw new DataValidationError({ message: `'uniqueName' is invalid` });
+        }
         const key = crypto.createHash('md5').update(data.uniqueName.trim(), 'utf8').digest('base64').replace(/[=]+$/, '');
         return [data.lang.trim().toLowerCase(), key].join('');
     }
@@ -51,7 +54,7 @@ export class UniqueNameHelper {
     }
 
     static isValidUniqueName(uname: string) {
-        return typeof uname === 'string' && uname.trim().length > 1;
+        return typeof uname === 'string' && uname.trim().length > 1 && uname.replace(/\s+/g, ' ') === uname;
     }
 }
 

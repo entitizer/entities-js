@@ -9,7 +9,7 @@
     "clean_lib": "shx rm -rf lib",
     "clean_types": "shx rm -rf types",
     "build_test": "npm-run-all build_lib clean_test && tsc --project ./test --pretty",
-    "test_mocha": "mocha --opts test/default.opts test-js",
+    "test_mocha": "mocha --opts test/default.opts test-js/**/*.spec.js",
     "test": "npm-run-all build_test test_mocha clean_test",
     "build_lib": "npm-run-all clean_lib clean_types tsc",
     "tsc": "tsc",

@@ -19,7 +19,7 @@ export type Entity = {
     types?: string[]
     cc2?: string
     rank?: number
-    data?: StringPlainObject
+    data?: PlainObject<string[]>
     /**
      * created at timestamp
      */

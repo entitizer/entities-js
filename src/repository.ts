@@ -24,10 +24,13 @@ export interface RootRepository<T extends OneEntityType> {
     create(data: T, options?: RepAccessOptions): Observable<T>
 }
 
-export interface Repository<T extends OneEntityType, ID> extends RootRepository<T> {
-    update(data: RepUpdateData<T, ID>, options?: RepUpdateOptions): Observable<T>
+export interface ReadRepository<T extends OneEntityType, ID> {
     getById(id: ID, options?: RepAccessOptions): Observable<T>
     getByIds(ids: ID[], options?: RepAccessOptions): Observable<T[]>
+}
+
+export interface Repository<T extends OneEntityType, ID> extends RootRepository<T>, ReadRepository<T, ID> {
+    update(data: RepUpdateData<T, ID>, options?: RepUpdateOptions): Observable<T>
     delete(id: ID): Observable<T>
 }
 

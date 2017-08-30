@@ -1,5 +1,5 @@
 
-const debug = require('debug')('entitizer-entities');
+// const debug = require('debug')('entitizer-entities');
 
 export * from './errors';
 export * from './convert-error';

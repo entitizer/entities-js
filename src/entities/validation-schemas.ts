@@ -14,8 +14,8 @@ const entityMaxAliases = 50;
 const entityMaxTypes = 16;
 const entityExtractMaxLength = 500;
 const entityExtractMinLength = 50;
-const entityWikiImageMaxLength = 200;
-const entityWikiImageMinLength = 5;
+// const entityWikiImageMaxLength = 200;
+// const entityWikiImageMinLength = 5;
 const entityTypeMaxLength = 20;
 const entityTypeMinLength = 2;
 

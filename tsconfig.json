@@ -10,7 +10,10 @@
         "sourceMap": false,
         "moduleResolution": "node",
         "declaration": true,
-        "declarationDir": "types"
+        "declarationDir": "types",
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "allowJs": false
     },
     "formatCodeOptions": {
         "indentSize": 2,

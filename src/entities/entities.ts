@@ -1,5 +1,5 @@
 
-import { createEnum, StringPlainObject, PlainObject } from '../utils';
+import { createEnum, PlainObject } from '../utils';
 
 export const EntityType = createEnum(['E', 'L', 'O', 'H', 'P', 'C']);
 export type EntityType = keyof typeof EntityType;

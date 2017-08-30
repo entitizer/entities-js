@@ -1,5 +1,4 @@
 
-import { Observable } from '../../utils';
 import { GetByIdUseCase } from '../get-byid-usecase';
 import { EntityID, Entity } from '../../entities';
 import { EntityRepository } from '../../repository';

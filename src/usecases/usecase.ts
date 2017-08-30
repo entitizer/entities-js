@@ -1,5 +1,5 @@
 
-import { Observable, Observer } from '../utils';
+import { Observable } from '../utils';
 
 export interface UseCase<T, DATA> {
     execute(data: DATA): Observable<T>

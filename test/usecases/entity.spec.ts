@@ -3,7 +3,6 @@ import { Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById 
 import { MemoryEntityRepository } from './EntityRepository';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
-import { expect } from 'chai';
 
 describe('Entity UseCases', function () {
     const entityRepository = new MemoryEntityRepository();

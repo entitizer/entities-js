@@ -1,7 +1,6 @@
 
 const crypto = require('crypto');
 const atonic = require('atonic');
-import { Entity } from './entities';
 import { DataValidationError } from '../errors';
 
 export class EntityHelper {

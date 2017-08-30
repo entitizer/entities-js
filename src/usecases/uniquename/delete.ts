@@ -1,7 +1,7 @@
 
 import { Observable } from '../../utils';
 import { BaseUseCase } from '../usecase';
-import { Validator, UniqueName, UniqueNameID } from '../../entities';
+import { UniqueName, UniqueNameID } from '../../entities';
 import { UniqueNameRepository } from '../../repository';
 
 export class UniqueNameDelete extends BaseUseCase<UniqueName, UniqueNameID> {

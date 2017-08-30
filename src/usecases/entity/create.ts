@@ -2,7 +2,6 @@
 import { CreateUseCase } from '../create-usecase';
 import { Entity, EntityValidator, EntityHelper } from '../../entities';
 import { EntityRepository } from '../../repository';
-import { Observable } from '../../utils';
 
 export class EntityCreate extends CreateUseCase<Entity, string> {
     constructor(repository: EntityRepository) {

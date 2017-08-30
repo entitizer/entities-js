@@ -1,5 +1,5 @@
 
-import { Observable, Observer } from '../../utils';
+import { Observable } from '../../utils';
 import { BaseUseCase } from '../usecase';
 import { UniqueNameDeleteEntity } from '../uniquename/delete-entity';
 import { Validator, Entity } from '../../entities';

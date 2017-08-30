@@ -41,6 +41,7 @@
     "@types/node": "^7.x.x",
     "debug": "^2.6.3",
     "mocha": "^3.2.0",
+    "npm-run-all": "^4.1.1",
     "shx": "^0.2.2",
     "typescript": "^2.2.2"
   },

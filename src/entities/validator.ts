@@ -1,5 +1,5 @@
 
-import { DataValidationError } from '../errors';
+import { DataValidationError, CodeError } from '../errors';
 import { ValidationOptions, ObjectSchema } from 'joi';
 import { Entity, UniqueName, UniqueNameID } from './entities';
 import { RepUpdateData } from '../repository';
@@ -81,5 +81,9 @@ export class UniqueNameValidator extends BaseValidator<UniqueName, UniqueNameID>
             throw new DataValidationError({ message: `lang or entityId are invalid!` });
         }
         return super.create(data, options);
+    }
+
+    update(data: RepUpdateData<UniqueName, UniqueNameID>, options?: ValidationOptions): RepUpdateData<UniqueName, UniqueNameID> {
+        throw new CodeError({ message: 'UniqueName cannot be updated' });
     }
 }

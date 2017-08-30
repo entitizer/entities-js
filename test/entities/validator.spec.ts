@@ -38,6 +38,37 @@ describe('EntityValidator', function () {
             });
         });
     });
+    describe('#update', function () {
+        describe('invalid data', function () {
+            const data = {
+                empty: {},
+                null: null,
+                undefined: undefined,
+                noUpdateAt: { id: 'ROQ21', name: 'name', wikiId: 'Q21', createdAt: 1213232 },
+                noId: { name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
+                invalidLangWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q21', createdAt: 1213232, type: 'C' }
+            };
+            Object.keys(data).forEach(name => {
+                it('fail update ' + name, function () {
+                    assert.throws(function () {
+                        EntityValidator.instance.update(data[name]);
+                    });
+                });
+            });
+        });
+
+        describe('valid data', function () {
+            const data = {
+                ROQ21: { id: 'ROQ21', name: 'name', updatedAt: 1213232, type: 'C' }
+            };
+            Object.keys(data).forEach(name => {
+                it('success update ' + name, function () {
+                    const ndata = EntityValidator.instance.update(data[name]);
+                    assert.equal(ndata.id, data[name].id);
+                });
+            });
+        });
+    });
 });
 
 describe('UniqueNameValidator', function () {

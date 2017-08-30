@@ -34,12 +34,16 @@ export interface Repository<T extends OneEntityType, ID> extends RootRepository<
     delete(id: ID): Observable<T>
 }
 
-export interface EntityRepository extends Repository<Entity, string> {
+export interface ReadEntityRepository extends ReadRepository<Entity, string> {
 }
 
+export interface EntityRepository extends Repository<Entity, string>, ReadEntityRepository {
+}
 
-
-export interface UniqueNameRepository extends Repository<UniqueName, UniqueNameID> {
+export interface ReadUniqueNameRepository extends ReadRepository<UniqueName, UniqueNameID> {
     getByEntityId(entityId: string): Observable<UniqueName[]>
     getEntityIdsByKeys(keys: string[]): Observable<PlainObject<string[]>>
+}
+
+export interface UniqueNameRepository extends Repository<UniqueName, UniqueNameID>, ReadUniqueNameRepository {
 }

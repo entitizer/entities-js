@@ -49,25 +49,28 @@ export const createEntity = Joi.object().keys({
 
 export const updateEntity = Joi.object().keys({
     id: Joi.string().regex(entityIdRegex).required(),
-    name: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
-    abbr: Joi.string().min(entityAbbrMinLength).max(entityAbbrMaxLength),
-    description: Joi.string().min(entityDescriptionMinLength).max(entityDescriptionMaxLength),
-    wikiPageId: Joi.number().integer().positive(),
-    aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required()).max(entityMaxAliases),
-    extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
-    wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
-    type: Joi.valid('E', 'L', 'O', 'H', 'P', 'C'),
-    types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
-    cc2: Joi.string().regex(langRegex),
-    rank: Joi.number().integer().positive(),
-    data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.array().items(Joi.string().trim().min(1).max(200))),
-    /**
-     * updated at timestamp
-     */
-    updatedAt: Joi.number().integer().positive().required(),
+    set: Joi.object().keys({
+        name: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
+        abbr: Joi.string().min(entityAbbrMinLength).max(entityAbbrMaxLength),
+        description: Joi.string().min(entityDescriptionMinLength).max(entityDescriptionMaxLength),
+        wikiPageId: Joi.number().integer().positive(),
+        aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required()).max(entityMaxAliases),
+        extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
+        wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
+        type: Joi.valid('E', 'L', 'O', 'H', 'P', 'C'),
+        types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
+        cc2: Joi.string().regex(langRegex),
+        rank: Joi.number().integer().positive(),
+        data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.array().items(Joi.string().trim().min(1).max(200))),
+        /**
+         * updated at timestamp
+         */
+        updatedAt: Joi.number().integer().positive().required(),
 
-    redirectId: Joi.string().regex(entityIdRegex)
-}).required();
+        redirectId: Joi.string().regex(entityIdRegex)
+    }),
+    delete: Joi.array().items(Joi.string().valid(['abbr', 'description', 'wikiPageId', 'extract', 'wikiTitle', 'cc2', 'data', 'redirectId']))
+}).or('set', 'delete').required();
 
 export const createUniqueName = Joi.object().keys({
     entityId: Joi.string().regex(entityIdRegex).required(),

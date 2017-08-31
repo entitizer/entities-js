@@ -1,5 +1,5 @@
 
-import { UniqueNameValidator, EntityValidator } from '../../src';
+import { UniqueNameValidator, EntityValidator, Entity } from '../../src';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 
@@ -41,17 +41,16 @@ describe('EntityValidator', function () {
     describe('#update', function () {
         describe('invalid data', function () {
             const data = {
-                empty: {},
-                null: null,
-                undefined: undefined,
-                noUpdateAt: { id: 'ROQ21', name: 'name', wikiId: 'Q21', createdAt: 1213232 },
-                noId: { name: 'name', wikiId: 'Q21', createdAt: 1213232, type: 'C' },
-                invalidLangWikiId: { lang: 'ro', name: 'name', id: 'RUQ21', wikiId: 'Q21', createdAt: 1213232, type: 'C' }
+                empty: { id: 'id', message: 'just id' },
+                null: { id: 'id', set: null, message: 'null data' },
+                undefined: { id: 'id', set: undefined, message: 'undefined data' },
+                noUpdateAt: { id: 'ROQ21', set: { name: 'name', wikiId: 'Q21' } },
+                invalidDeleteField: { id: 'id', delete: ['name'] }
             };
             Object.keys(data).forEach(name => {
                 it('fail update ' + name, function () {
                     assert.throws(function () {
-                        EntityValidator.instance.update(data[name]);
+                        EntityValidator.instance.update({ id: data[name].id, set: data[name].set });
                     });
                 });
             });
@@ -59,7 +58,8 @@ describe('EntityValidator', function () {
 
         describe('valid data', function () {
             const data = {
-                ROQ21: { id: 'ROQ21', name: 'name', updatedAt: 1213232, type: 'C' }
+                ROQ21: { id: 'ROQ21', set: { name: 'name', updatedAt: 1213232, type: 'C' } },
+                ROQ22: { id: 'ROQ22', set: { name: 'name', updatedAt: 1213232, type: 'C' }, delete: ['abbr'] }
             };
             Object.keys(data).forEach(name => {
                 it('success update ' + name, function () {

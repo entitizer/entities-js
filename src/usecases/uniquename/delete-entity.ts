@@ -13,6 +13,6 @@ export class UniqueNameDeleteEntity extends BaseUseCase<UniqueName[], string> {
         return this.repository.getByEntityId(entityId)
             .mergeMap(items => Observable.from(items)
                 .mergeMap(item => this.repository.delete({ entityId: item.entityId, key: item.key }))
-                .combineAll());
+                .toArray());
     }
 }

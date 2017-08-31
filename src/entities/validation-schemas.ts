@@ -9,10 +9,10 @@ const entityNameMinLength = 2;
 const entityAbbrMaxLength = 20;
 const entityAbbrMinLength = 1;
 const entityDescriptionMaxLength = 400;
-const entityDescriptionMinLength = 10;
+const entityDescriptionMinLength = 2;
 const entityMaxAliases = 50;
 const entityMaxTypes = 16;
-const entityExtractMaxLength = 500;
+const entityExtractMaxLength = 400;
 const entityExtractMinLength = 50;
 // const entityWikiImageMaxLength = 200;
 // const entityWikiImageMinLength = 5;
@@ -27,14 +27,14 @@ export const createEntity = Joi.object().keys({
     abbr: Joi.string().min(entityAbbrMinLength).max(entityAbbrMaxLength),
     description: Joi.string().min(entityDescriptionMinLength).max(entityDescriptionMaxLength),
     wikiPageId: Joi.number().integer().positive(),
-    aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required()).max(entityMaxAliases),
+    aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength)).max(entityMaxAliases),
     extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
     wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
     type: Joi.valid('E', 'L', 'O', 'H', 'P', 'C').required(),
-    types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
-    cc2: Joi.string().regex(langRegex),
+    types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength)).unique().max(entityMaxTypes),
+    cc2: Joi.string().lowercase().regex(langRegex),
     rank: Joi.number().integer().positive(),
-    data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.array().items(Joi.string().trim().min(1).max(200))),
+    data: Joi.object({}).pattern(/^P\d+$/, Joi.array().items(Joi.string().trim().min(1).max(200)).unique().required()),
     /**
      * created at timestamp
      */
@@ -54,14 +54,14 @@ export const updateEntity = Joi.object().keys({
         abbr: Joi.string().min(entityAbbrMinLength).max(entityAbbrMaxLength),
         description: Joi.string().min(entityDescriptionMinLength).max(entityDescriptionMaxLength),
         wikiPageId: Joi.number().integer().positive(),
-        aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength).required()).max(entityMaxAliases),
+        aliases: Joi.array().items(Joi.string().min(entityNameMinLength).max(entityNameMaxLength)).max(entityMaxAliases),
         extract: Joi.string().min(entityExtractMinLength).max(entityExtractMaxLength),
         wikiTitle: Joi.string().min(entityNameMinLength).max(entityNameMaxLength),
         type: Joi.valid('E', 'L', 'O', 'H', 'P', 'C'),
-        types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength).required()).max(entityMaxTypes),
-        cc2: Joi.string().regex(langRegex),
+        types: Joi.array().items(Joi.string().min(entityTypeMinLength).max(entityTypeMaxLength)).unique().max(entityMaxTypes),
+        cc2: Joi.string().lowercase().regex(langRegex),
         rank: Joi.number().integer().positive(),
-        data: Joi.object().pattern(/^[a-zA-Z][a-zA-Z0-9_]$/, Joi.array().items(Joi.string().trim().min(1).max(200))),
+        data: Joi.object({}).pattern(/^P\d+$/, Joi.array().items(Joi.string().trim().min(1).max(200)).unique().required()),
         /**
          * updated at timestamp
          */

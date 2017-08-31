@@ -37,17 +37,17 @@
   },
   "homepage": "https://github.com/entitizer/entities-js#readme",
   "devDependencies": {
-    "@types/joi": "^10.0.1",
+    "@types/joi": "^10.4.1",
     "@types/node": "^7.x.x",
     "debug": "^2.6.3",
     "mocha": "^3.2.0",
     "npm-run-all": "^4.1.1",
     "shx": "^0.2.2",
-    "typescript": "^2.2.2"
+    "typescript": "^2.4.2"
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.4.3",
     "atonic": "^1.0.4",
-    "joi": "^10.4.1"
+    "joi": "^10.6.0"
   }
 }

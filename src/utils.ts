@@ -21,3 +21,7 @@ export function createEnum<T extends string>(o: Array<T>): {[K in T]: K} {
     return res;
   }, Object.create(null));
 }
+
+export function uniq<T>(items: T[]) {
+  return items.filter((value, index, self) => self.indexOf(value) === index);
+}

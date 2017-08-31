@@ -1,5 +1,5 @@
 
-import { Entity, EntityCreate, EntityDelete, DataValidationError, EntityGetById } from '../../src';
+import { Entity, EntityCreate, EntityDelete, DataValidationError } from '../../src';
 import { MemoryEntityRepository } from './EntityRepository';
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
@@ -63,7 +63,6 @@ describe('Entity UseCases', function () {
         });
     });
     describe('EntityGetById', function () {
-        const getEntityById = new EntityGetById(entityRepository);
         const entities = {
             ENQ41: {
                 entity: {
@@ -80,7 +79,7 @@ describe('Entity UseCases', function () {
         Object.keys(entities).forEach(id => {
             const data = entities[id];
             it('should ' + (data.error ? 'fail' : 'success') + ' get entity by id == ' + id, function (done) {
-                getEntityById.execute(id).subscribe(
+                entityRepository.getById(id).subscribe(
                     entity => {
                         if (data.error) {
                             return done(new Error('Should not pass'));

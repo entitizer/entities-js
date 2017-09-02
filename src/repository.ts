@@ -1,6 +1,7 @@
 
-import { PlainObject, Observable } from './utils';
-import { OneEntityType, Entity, UniqueName, UniqueNameID } from './entities';
+import { PlainObject, AnyPlainObject, Observable } from './utils';
+import { OneEntityType, Entity, UniqueName, UniqueNameID, OneEntityName } from './entities';
+import { DataValidationError } from './errors';
 
 export interface RepAccessOptions {
     /**

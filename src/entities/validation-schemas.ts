@@ -13,10 +13,10 @@ const entityDescriptionMinLength = 2;
 const entityMaxAliases = 50;
 const entityMaxTypes = 16;
 const entityExtractMaxLength = 400;
-const entityExtractMinLength = 50;
+const entityExtractMinLength = 2;
 // const entityWikiImageMaxLength = 200;
 // const entityWikiImageMinLength = 5;
-const entityTypeMaxLength = 20;
+const entityTypeMaxLength = 50;
 const entityTypeMinLength = 2;
 
 export const createEntity = Joi.object().keys({

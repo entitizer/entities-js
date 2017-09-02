@@ -84,3 +84,4 @@ export type UniqueName = {
 export const UniqueNameFields = createEnum(['entityId', 'lang', 'name', 'uniqueName', 'key', 'createdAt']);
 export type UniqueNameFields = keyof typeof UniqueNameFields;
 export type OneEntityType = Entity | UniqueName;
+export type OneEntityName = 'Entity' | 'UniqueName';

@@ -1,5 +1,5 @@
 
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
 export { Observable, Observer } from '@reactivex/rxjs';
 

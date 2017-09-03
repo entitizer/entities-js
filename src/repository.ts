@@ -17,7 +17,7 @@ export interface RepUpdateOptions extends RepAccessOptions {
 export interface RepUpdateData<T, ID> {
     id: ID
     set?: T
-    delete?: (keyof T)[]
+    remove?: (keyof T)[]
     // inc?: { [index: (keyof T)]: number }
 }
 

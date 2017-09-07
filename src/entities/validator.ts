@@ -64,7 +64,7 @@ export class EntityValidator extends BaseValidator<Entity, string> {
     }
 
     update(data: RepUpdateData<Entity, string>, options?: ValidationOptions): RepUpdateData<Entity, string> {
-        
+
         filterEntityData(data.set);
 
         return super.update(data, options);
@@ -114,34 +114,73 @@ function filterEntityData(entity: Entity) {
 const ENTITY_DATA_PROPS_MAP: PlainObject<string[]> = {
     // Person
     H: [
-        // instance of
-        'P31',
+        // image
+        'P18',
+        // place of birth
+        'P19',
+
+        // place of death
+        'P20',
         // sex or gender
         'P21',
-        // date of birth
-        'P569',
-        // occupation
-        'P106',
-        // country of citizenship
-        'P27',
-        // family name
-        'P734',
         // father
         'P22',
         // mother
         'P25',
         // spouse
         'P26',
+        // country of citizenship
+        'P27',
+
+
+        // instance of
+        'P31',
+        // position held
+        // 'P39',
+
+        // child
+        'P40',
+
+        // educated at
+        'P69',
+
         // native language
         'P103',
-        // position held
-        'P39',
-        // nickname
-        'P1449',
-        // IMDb ID
-        'P345',
+        // occupation
+        'P106',
+        // award received
+        // 'P166',
+
         // ISNI
         'P213',
+        // VIAF ID
+        'P214',
+        // GND ID
+        'P227',
+
+        // IMDb ID
+        'P345',
+
+        // date of birth
+        'P569',
+        // date of death
+        'P570',
+
+        // family name
+        'P734',
+        // given name
+        'P735',
+
+        // official website
+        'P856',
+
+        // nickname
+        'P1449',
+        // birth name
+        'P1477',
+        // name in native language
+        'P1559',
+
         // Twitter username
         'P2002',
         // Instagram username
@@ -150,16 +189,13 @@ const ENTITY_DATA_PROPS_MAP: PlainObject<string[]> = {
         'P2013',
         // YouTube channel ID
         'P2397',
-        // date of death
-        'P570',
-        // place of birth
-        'P19',
-        // place of death
-        'P20',
-        // official website
-        'P856',
+
+        // sibling
+        'P3373',
         // Quora topic ID
-        'P3417'
+        'P3417',
+        // stepparent
+        'P3448'
     ],
     // Location
     L: [
@@ -350,3 +386,72 @@ const ENTITY_DATA_PROPS_MAP: PlainObject<string[]> = {
 };
 
 const ENTITY_DATA_PROPS: string[] = uniq(Object.keys(ENTITY_DATA_PROPS_MAP).reduce<string[]>((list, type) => list.concat(ENTITY_DATA_PROPS_MAP[type]), []));
+
+// const INVALID_DATA_PROPS = [
+//     // religion
+//     'P140',
+//     // member of political party
+//     'P102',
+//     // position held
+//     'P39',
+//     // member count
+//     'P2124',
+//     // located next to body of water
+//     'P206',
+//     // population
+//     'P1082',
+//     // area
+//     'P2046',
+//     // elevation above sea level
+//     'P2044',
+//     // located in time zone
+//     'P421',
+//     // sister city
+//     'P190',
+//     // Commons gallery
+//     'P935',
+//     // Commons category
+//     'P373',
+//     // topic's main category
+//     'P910',
+//     // category of associated people
+//     'P1792',
+//     // category for people born here
+//     'P1464',
+//     // category for people who died here
+//     'P1465',
+//     // Dewey Decimal Classification
+//     'P1036',
+//     // permanent duplicated item
+//     'P2959',
+//     // part of
+//     'P361',
+//     // number of children
+//     'P1971',
+//     // languages spoken, written or signed
+//     'P1412',
+//     // native language
+//     'P103',
+//     // employer
+//     'P108',
+//     // influenced by
+//     'P737',
+//     // significant event
+//     'P793',
+//     // award received
+//     //'P166',
+//     // nominated for
+//     //'P1411',
+//     // educated at
+//     'P69',
+//     // academic degree
+//     'P512',
+//     // residence
+//     'P551',
+//     // ethnic group
+//     'P172',
+//     // signature
+//     'P109',
+//     // mass
+//     'P2067'
+// ];

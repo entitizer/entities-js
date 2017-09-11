@@ -22,7 +22,7 @@ describe('UniqueNameHelper', function () {
             };
             Object.keys(data).forEach(name => {
                 it('format ' + name + '=' + data[name], function (done) {
-                    const uname = UniqueNameHelper.formatUniqueName(name);
+                    const uname = UniqueNameHelper.formatUniqueName(name, 'en');
                     assert.equal(data[name], uname);
                     done();
                 });
@@ -37,7 +37,7 @@ describe('UniqueNameHelper', function () {
             };
             Object.keys(data).forEach(name => {
                 it('format ' + name + '=' + data[name], function (done) {
-                    const uname = UniqueNameHelper.formatUniqueName(name);
+                    const uname = UniqueNameHelper.formatUniqueName(name, 'en');
                     assert.equal(data[name], uname);
                     done();
                 });

@@ -48,6 +48,7 @@
   "dependencies": {
     "@reactivex/rxjs": "^5.4.3",
     "atonic": "^1.0.4",
-    "joi": "^10.6.0"
+    "joi": "^10.6.0",
+    "standard-text": "^0.1.1"
   }
 }

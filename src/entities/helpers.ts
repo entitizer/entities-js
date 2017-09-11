@@ -2,6 +2,7 @@
 const crypto = require('crypto');
 const atonic = require('atonic');
 import { DataValidationError } from '../errors';
+const standardText = require('standard-text');
 
 export class EntityHelper {
     static createId(entity: { lang: string, wikiId: string }): string {
@@ -30,8 +31,9 @@ export class UniqueNameHelper {
      * const uname = formatUniqueName('Ștefan cel Mare și Sfânt');
      * // uname === 'stefan cel mare si sfant'
      */
-    static formatUniqueName(name: string): string {
+    static formatUniqueName(name: string, lang: string): string {
         name = removeSymbolsFromText(name);
+        name = standardText(name, lang);
         const words = name.split(/\s+/g);
 
         if (words.length === 1) {

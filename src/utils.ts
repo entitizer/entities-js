@@ -25,3 +25,7 @@ export function createEnum<T extends string>(o: Array<T>): {[K in T]: K} {
 export function uniq<T>(items: T[]) {
   return items.filter((value, index, self) => self.indexOf(value) === index);
 }
+
+export function eachSeries<T>(arr: any[], iteratorFn: (item: any) => Promise<T>) {
+  return arr.reduce((p, item) => p.then(() => iteratorFn(item)), Promise.resolve());
+}

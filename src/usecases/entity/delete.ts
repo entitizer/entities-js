@@ -2,7 +2,7 @@
 import { Observable } from '../../utils';
 import { BaseUseCase } from '../usecase';
 import { UniqueNameDeleteEntity } from '../uniquename/delete-entity';
-import { Validator, Entity } from '../../entities';
+import { Entity } from '../../entities';
 import { EntityRepository } from '../../repository';
 
 export class EntityDelete extends BaseUseCase<Entity, string> {

@@ -2,7 +2,6 @@
 import { CreateUseCase } from '../create-usecase';
 import { UniqueName, UniqueNameID, UniqueNameValidator } from '../../entities';
 import { UniqueNameRepository } from '../../repository';
-import { DataValidationError } from '../../errors';
 
 export class UniqueNameCreate extends CreateUseCase<UniqueName, UniqueNameID> {
     constructor(repository: UniqueNameRepository) {

@@ -1,115 +1,8 @@
 
-import { DataValidationError, CodeError } from '../errors';
-import { ValidationOptions, ObjectSchema } from 'joi';
-import { Entity, UniqueName, UniqueNameID } from './entities';
-import { RepUpdateData } from '../repository';
-import { createEntity, createUniqueName, updateEntity, updateUniqueName } from './validation-schemas';
-import { EntityHelper } from './helpers';
-import { PlainObject, uniq } from '../utils';
-import { UniqueNameHelper } from './helpers';
-const standardText = require('standard-text');
+import { Entity } from '../entities';
+import { uniq, PlainObject } from '../../utils';
 
-export interface Validator<T, ID> {
-    create(data: T, options?: ValidationOptions): T
-    update(data: RepUpdateData<T, ID>, options?: ValidationOptions): RepUpdateData<T, ID>
-}
-
-export class BaseValidator<T, ID> implements Validator<T, ID> {
-
-    constructor(private name: string, private createSchema: ObjectSchema, private updateSchema?: ObjectSchema) { }
-
-    create(data: T, options?: ValidationOptions): T {
-        return validateSchema(this.createSchema, data, options);
-    }
-
-    update(data: RepUpdateData<T, ID>, options?: ValidationOptions): RepUpdateData<T, ID> {
-        if (this.updateSchema) {
-            return validateSchema(this.updateSchema, data, options);
-        }
-        return data;
-    }
-}
-
-export function validateSchema<T>(schema: ObjectSchema, data: T, options?: ValidationOptions): T {
-    options = Object.assign({ abortEarly: true, convert: true, allowUnknown: false, stripUnknown: false }, options || {});
-
-    const result = schema.validate(data, options);
-    if (result.error) {
-        throw new DataValidationError({ error: result.error });
-    }
-
-    return result.value;
-}
-
-export class EntityValidator extends BaseValidator<Entity, string> {
-    constructor() {
-        super('Entity', createEntity, updateEntity);
-    }
-
-    private static _instance: EntityValidator;
-
-    static get instance() {
-        if (!EntityValidator._instance) {
-            EntityValidator._instance = new EntityValidator();
-        }
-
-        return EntityValidator._instance;
-    }
-
-    create(data: Entity, options?: ValidationOptions): Entity {
-        if (data && data.id !== EntityHelper.createId({ lang: data.lang, wikiId: data.wikiId })) {
-            throw new DataValidationError({ message: `id is invalid!` });
-        }
-        filterEntityData(data);
-
-        return super.create(data, options);
-    }
-
-    update(data: RepUpdateData<Entity, string>, options?: ValidationOptions): RepUpdateData<Entity, string> {
-
-        filterEntityData(data.set);
-
-        return super.update(data, options);
-    }
-}
-
-export class UniqueNameValidator extends BaseValidator<UniqueName, UniqueNameID> {
-    constructor() {
-        super('UniqueName', createUniqueName, updateUniqueName);
-    }
-
-    private static _instance: UniqueNameValidator;
-
-    static get instance() {
-        if (!UniqueNameValidator._instance) {
-            UniqueNameValidator._instance = new UniqueNameValidator();
-        }
-
-        return UniqueNameValidator._instance;
-    }
-
-    create(data: UniqueName, options?: ValidationOptions): UniqueName {
-        if (data && data.entityId && data.lang !== data.entityId.substr(0, 2).toLowerCase()) {
-            throw new DataValidationError({ message: `lang or entityId are invalid!` });
-        }
-        data.name = standardText(data.name, data.lang);
-        data.uniqueName = UniqueNameHelper.formatUniqueName(data.name, data.lang);
-
-        if (!UniqueNameHelper.isValidUniqueName(data.uniqueName)) {
-            throw new DataValidationError({ message: 'Invalid unique name:' + data.uniqueName });
-        }
-
-        data.key = UniqueNameHelper.formatKey({ uniqueName: data.uniqueName, lang: data.lang });
-
-        return super.create(data, options);
-    }
-
-    update(data: RepUpdateData<UniqueName, UniqueNameID>, options?: ValidationOptions): RepUpdateData<UniqueName, UniqueNameID> {
-        throw new CodeError({ message: 'UniqueName cannot be updated' });
-    }
-}
-
-function filterEntityData(entity: Entity) {
+export function filterEntityData(entity: Entity) {
     if (entity && entity.data) {
         const data = entity.data;
         for (let prop in data) {
@@ -117,6 +10,9 @@ function filterEntityData(entity: Entity) {
                 delete data[prop];
             } else {
                 data[prop] = uniq(data[prop]).slice(0, 5);
+                if (data[prop].length === 0) {
+                    delete data[prop];
+                }
             }
         }
     }
@@ -397,72 +293,3 @@ const ENTITY_DATA_PROPS_MAP: PlainObject<string[]> = {
 };
 
 const ENTITY_DATA_PROPS: string[] = uniq(Object.keys(ENTITY_DATA_PROPS_MAP).reduce<string[]>((list, type) => list.concat(ENTITY_DATA_PROPS_MAP[type]), []));
-
-// const INVALID_DATA_PROPS = [
-//     // religion
-//     'P140',
-//     // member of political party
-//     'P102',
-//     // position held
-//     'P39',
-//     // member count
-//     'P2124',
-//     // located next to body of water
-//     'P206',
-//     // population
-//     'P1082',
-//     // area
-//     'P2046',
-//     // elevation above sea level
-//     'P2044',
-//     // located in time zone
-//     'P421',
-//     // sister city
-//     'P190',
-//     // Commons gallery
-//     'P935',
-//     // Commons category
-//     'P373',
-//     // topic's main category
-//     'P910',
-//     // category of associated people
-//     'P1792',
-//     // category for people born here
-//     'P1464',
-//     // category for people who died here
-//     'P1465',
-//     // Dewey Decimal Classification
-//     'P1036',
-//     // permanent duplicated item
-//     'P2959',
-//     // part of
-//     'P361',
-//     // number of children
-//     'P1971',
-//     // languages spoken, written or signed
-//     'P1412',
-//     // native language
-//     'P103',
-//     // employer
-//     'P108',
-//     // influenced by
-//     'P737',
-//     // significant event
-//     'P793',
-//     // award received
-//     //'P166',
-//     // nominated for
-//     //'P1411',
-//     // educated at
-//     'P69',
-//     // academic degree
-//     'P512',
-//     // residence
-//     'P551',
-//     // ethnic group
-//     'P172',
-//     // signature
-//     'P109',
-//     // mass
-//     'P2067'
-// ];

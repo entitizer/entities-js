@@ -21,6 +21,7 @@ export type Entity = {
     cc2?: string
     rank?: number
     data?: EntityData
+    categories?: string[]
     /**
      * created at timestamp
      */
@@ -52,6 +53,7 @@ export const EntityFields = createEnum([
     'cc2',
     'rank',
     'data',
+    'categories',
     'createdAt',
     'updatedAt',
     'redirectId'

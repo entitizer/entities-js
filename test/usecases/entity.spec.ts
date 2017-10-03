@@ -21,7 +21,7 @@ describe('Entity UseCases', function () {
             },
             noWikiId: {
                 entity: {
-                    lang: 'en',
+                    lang: 'ro',
                     name: 'Greece'
                 },
                 error: {
@@ -32,7 +32,7 @@ describe('Entity UseCases', function () {
             Q41: {
                 entity: {
                     wikiId: 'Q41',
-                    lang: 'en',
+                    lang: 'ro',
                     name: 'Greece',
                     type: 'L'
                 }
@@ -64,10 +64,10 @@ describe('Entity UseCases', function () {
     });
     describe('EntityGetById', function () {
         const entities = {
-            ENQ41: {
+            ROQ41: {
                 entity: {
                     wikiId: 'Q41',
-                    lang: 'en',
+                    lang: 'ro',
                     name: 'Greece'
                 }
             },

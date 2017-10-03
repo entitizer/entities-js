@@ -7,7 +7,7 @@ export function filterEntityCategories(entity: Entity): string[] {
         return entity.categories;
     }
 
-    let categories = uniq(entity.categories.map(c => c.indexOf(':') > 0 ? c.split(/:/)[1] : c));
+    let categories = uniq(entity.categories.map(c => c.indexOf(':') > 0 ? c.split(/:/)[1] : c)).slice(0, 5);
 
     return categories;
 }

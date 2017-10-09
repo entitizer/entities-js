@@ -1,6 +1,6 @@
 {
   "name": "entitizer.entities",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Entitizer entities module",
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
@@ -37,7 +37,6 @@
   },
   "homepage": "https://github.com/entitizer/entities-js#readme",
   "devDependencies": {
-    "@types/joi": "^10.4.1",
     "@types/node": "^7.x.x",
     "debug": "^2.6.3",
     "mocha": "^3.2.0",
@@ -47,6 +46,7 @@
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.4.3",
+    "@types/joi": "^10.4.3",
     "atonic": "^1.0.4",
     "joi": "^10.6.0",
     "standard-text": "^0.1.1"
